@@ -601,4 +601,4 @@ video {
   line-height: 1.5rem;
 }
 
-/* npx tailwindcss -i src/main/resources/static/css/index.css -o src/main/resources/static/css/output.css --watc */
+/* npx tailwindcss -i src/main/resources/static/css/index.css -o src/main/resources/static/css/output.css --watch */
