@@ -37,4 +37,34 @@ public class PageController {
 
     }
 
+    // routing for /contact
+    @RequestMapping("/contact")
+    public String contactPage(Model model) {
+
+        System.out.println("Contact Page");
+        model.addAttribute("name", "Rohit");
+        return "services";
+
+    }
+
+    // routing for /contact
+    @RequestMapping("/login")
+    public String loginPage(Model model) {
+
+        System.out.println("Login Page");
+        model.addAttribute("name", "Rohit");
+        return "login";
+
+    }
+
+    // routing for /contact
+    @RequestMapping("/register")
+    public String registerPage(Model model) {
+
+        System.out.println("Register Page");
+        model.addAttribute("name", "Rohit");
+        return "register";
+
+    }
+
 }
