@@ -68,7 +68,7 @@ public class PageController {
         UserForm userForm = new UserForm();
         model.addAttribute("userForm", userForm);
 
-        System.out.println("Register Page");
+        System.out.println("Register Page"); 
         model.addAttribute("name", "Rohit");
         return "register";
 
