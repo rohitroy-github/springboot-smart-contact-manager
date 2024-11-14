@@ -2,7 +2,11 @@ package springdev.scm.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import springdev.scm.forms.UserForm;
 
 @Controller
 public class PageController {
@@ -61,10 +65,22 @@ public class PageController {
     @RequestMapping("/register")
     public String registerPage(Model model) {
 
+        UserForm userForm = new UserForm();
+        model.addAttribute("userForm", userForm);
+
         System.out.println("Register Page");
         model.addAttribute("name", "Rohit");
         return "register";
 
+    }
+
+    // registration-handler
+    @RequestMapping(value = "register-user", method = RequestMethod.POST)
+    public String processRegistration(@ModelAttribute UserForm userForm) { 
+
+        System.out.println(userForm);
+
+        return "redirect:/register";
     }
 
 }
