@@ -27,7 +27,7 @@ import lombok.Setter;
 @Builder
 public class User {
 
-    @Id
+    @Id                                                                                                                                                                                                                                                                                                      
     @Column(name = "user_id", nullable = false, unique = true)
     private String userId;
 
