@@ -84,17 +84,7 @@ public class PageController {
     @RequestMapping(value = "register-user", method = RequestMethod.POST)
     public String processRegistration(@ModelAttribute UserForm userForm) { 
 
-        // :> building User object from 'userForm' data
-        User builtUser = User.builder()
-        .name(userForm.getName())
-        .email(userForm.getEmail())
-        .password(userForm.getPassword())
-        .about(userForm.getAbout())
-        .phoneNumber(userForm.getPhoneNumber())
-        .profilePicture("https://www.pngarts.com/files/10/Default-Profile-Picture-Download-PNG-Image.png")
-        .build();
-
-        User savedUser = userService.saveUser(builtUser);
+        User savedUser = userService.registerUser(userForm);
 
         System.out.println("User saved successfully.");
 

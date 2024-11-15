@@ -46,7 +46,7 @@ public class User {
     @Column(name = "profile_picture")
     private String profilePicture;
 
-    @Column(name = "phone_number", unique = true, length = 15)
+    @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
     @Column(name = "enabled", nullable = true)

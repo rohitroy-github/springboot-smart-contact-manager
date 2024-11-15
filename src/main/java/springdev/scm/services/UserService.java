@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import springdev.scm.entities.User;
+import springdev.scm.forms.UserForm;
 
 
 public interface UserService {
 
     User saveUser(User user);
+
+    User registerUser(UserForm userForm);
 
     Optional<User> getUserById(String userId);
 

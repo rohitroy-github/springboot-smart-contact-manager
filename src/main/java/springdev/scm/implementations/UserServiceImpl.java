@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import springdev.scm.repositories.UserRepo;
 import springdev.scm.services.UserService;
 import springdev.scm.entities.User;
+import springdev.scm.forms.UserForm;
 import springdev.scm.helper.ResourceNotFoundException;
 
 import org.slf4j.Logger;
@@ -29,6 +30,24 @@ public class UserServiceImpl implements UserService {
         user.setUserId(generatedUserId);
 
         return userRepo.save(user);
+    }
+
+    @Override
+    public User registerUser(UserForm userForm) {
+        // :> Generating random ID for the newly created user
+        String generatedUserId = UUID.randomUUID().toString();
+
+        // :> Creating a new User object and setting its properties
+        User newUser = new User();
+        newUser.setUserId(generatedUserId);
+        newUser.setName(userForm.getName());
+        newUser.setEmail(userForm.getEmail());
+        newUser.setPassword(userForm.getPassword());
+        newUser.setAbout(userForm.getAbout());
+        newUser.setPhoneNumber(userForm.getPhoneNumber());
+        newUser.setProfilePicture("https://www.pngarts.com/files/10/Default-Profile-Picture-Download-PNG-Image.png");
+
+        return userRepo.save(newUser);
     }
 
     @Override
