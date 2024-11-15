@@ -3,7 +3,8 @@ package springdev.scm.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import springdev.scm.entities.User;
+
 
 public interface UserService {
 
@@ -11,7 +12,7 @@ public interface UserService {
 
     Optional<User> getUserById(String userId);
 
-    User updateUser(User user);
+    Optional<User> updateUser(User user);
 
     void deleteUser(String userId);
 
