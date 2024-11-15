@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jakarta.servlet.http.HttpSession;
 import springdev.scm.entities.User;
 import springdev.scm.forms.UserForm;
 import springdev.scm.services.UserService;
@@ -82,11 +83,13 @@ public class PageController {
 
     // registration-handler
     @RequestMapping(value = "register-user", method = RequestMethod.POST)
-    public String processRegistration(@ModelAttribute UserForm userForm) { 
+    public String processRegistration(@ModelAttribute UserForm userForm, HttpSession session) { 
 
         User savedUser = userService.registerUser(userForm);
 
         System.out.println("User saved successfully.");
+
+        session.setAttribute("message", "User registered successfully");
 
         return "redirect:/register";
     }
