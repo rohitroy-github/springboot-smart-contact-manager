@@ -1,6 +1,7 @@
 package springdev.scm.implementations;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
+        // :> generating random userId for newly created user
+        String generatedUserId = UUID.randomUUID().toString();
+        user.setUserId(generatedUserId);
 
         return userRepo.save(user);
     }

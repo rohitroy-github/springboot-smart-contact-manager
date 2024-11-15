@@ -1,15 +1,21 @@
 package springdev.scm.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import springdev.scm.entities.User;
 import springdev.scm.forms.UserForm;
+import springdev.scm.services.UserService;
 
 @Controller
 public class PageController {
+
+    @Autowired
+    private UserService userService;
 
     // routing for /home
     @RequestMapping("/home")
@@ -78,7 +84,19 @@ public class PageController {
     @RequestMapping(value = "register-user", method = RequestMethod.POST)
     public String processRegistration(@ModelAttribute UserForm userForm) { 
 
-        System.out.println(userForm);
+        // :> building User object from 'userForm' data
+        User builtUser = User.builder()
+        .name(userForm.getName())
+        .email(userForm.getEmail())
+        .password(userForm.getPassword())
+        .about(userForm.getAbout())
+        .phoneNumber(userForm.getPhoneNumber())
+        .profilePicture("https://www.pngarts.com/files/10/Default-Profile-Picture-Download-PNG-Image.png")
+        .build();
+
+        User savedUser = userService.saveUser(builtUser);
+
+        System.out.println("User saved successfully.");
 
         return "redirect:/register";
     }

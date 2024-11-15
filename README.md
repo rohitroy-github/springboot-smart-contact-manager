@@ -31,5 +31,5 @@
 - **Java**: JDK 11 or higher
 - **MySQL**: Installed and running
 - **Maven**: Installed
-- **IDE**: IntelliJ IDEA, Eclipse, or any Java IDE
+- **IDE**: IntelliJ IDEA, Eclipse, or any Java IDE 
 

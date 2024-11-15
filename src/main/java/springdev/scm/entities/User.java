@@ -49,17 +49,17 @@ public class User {
     @Column(name = "phone_number", unique = true, length = 15)
     private String phoneNumber;
 
-    @Column(name = "enabled", nullable = false)
+    @Column(name = "enabled", nullable = true)
     private boolean enabled = false; 
 
-    @Column(name = "email_verified", nullable = false)
+    @Column(name = "email_verified", nullable = true)
     private boolean emailVerified = false;
 
-    @Column(name = "phone_number_verified", nullable = false)
+    @Column(name = "phone_number_verified", nullable = true)
     private boolean phoneNumberVerified = false;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "provider", nullable = false)
+    @Column(name = "provider", nullable = true)
     private Providers provider = Providers.SELF;
 
     @Column(name = "provider_user_id")
