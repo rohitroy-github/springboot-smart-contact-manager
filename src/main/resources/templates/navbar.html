@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Contact Manager</title>
+  <link rel="stylesheet" th:href="@{/css/output.css}" />
+  <link rel="stylesheet" th:href="@{/css/index.css}" />
+</head>
+
+<body>
+  <!-- navbar.html -->
+  <header th:fragment="navbar" class="bg-gray-900 text-white p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">Smart Contact Manager</h1>
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="/" class="hover:text-gray-400">Home</a></li>
+          <li><a href="/about" class="hover:text-gray-400">About</a></li>
+          <li><a href="/services" class="hover:text-gray-400">Services</a></li>
+          <li><a href="/contact" class="hover:text-gray-400">Contact</a></li>
+          <li><a href="/login" class="hover:text-gray-400">Login</a></li>
+          <!-- <li><a href="/register" class="hover:text-gray-400">Register</a></li> -->
+          <li><a href="/logout" class="bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base :: parent(~{:: #content}, ~{:: title})}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Page</title>
+  <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+  <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
+</head>
+
+<body>
+  <section id="content">
+    <div class="container text-center">
+      <p class="font-montserrat text-base">About Page</p>
+      <p class="font-montserrat text-base" data-th-text="${name}">Name</p>
+    </div>
+  </section>
+
+</body>
+
+</html>

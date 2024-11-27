@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base :: parent(~{::#content},~{::title})}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page</title>
+  <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+  <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
+</head>
+
+<body class="bg-gray-100 font-montserrat">
+
+  <section id="content" class="flex justify-center items-center min-h-screen">
+    <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md text-center">
+      <h1 class="text-2xl font-bold text-gray-900 mb-6">Log In</h1>
+      <form data-th-method="POST" data-th-action="@{'/login-user'}" class="space-y-4">
+        <div>
+          <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>
+          <input type="email" id="email" name="email" required
+            class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+            placeholder="test@gmail.com" />
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-semibold text-gray-700">Password</label>
+          <input type="password" id="password" name="password" required
+            class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900" />
+        </div>
+
+        <button type="submit"
+          class="w-full py-2 mt-6 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+          Log In
+        </button>
+      </form>
+
+      <p class="mt-4 text-sm text-gray-600">
+        Don’t have an account?
+        <a href="/register" class="text-gray-900 font-semibold hover:underline">Sign Up</a>
+      </p>
+
+      <!-- OAuth Buttons -->
+      <div class="mt-6">
+        <p class="text-sm text-gray-500 mb-4">Or log in with:</p>
+        <div class="flex justify-center space-x-4">
+          <a href="/oauth2/authorization/google"
+            class="cursor-pointer flex items-center justify-center w-1/2 py-2 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+            <img src="/images/google-logo.svg" alt="Google" class="w-6 h-5 mr-2" />
+            Google
+          </a>
+          <a href="/oauth2/authorization/github"
+            class="cursor-pointer flex items-center justify-center w-1/2 py-2 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+            <img src="/images/github-logo.svg" alt="GitHub" class="w-5 h-5 mr-2" />
+            GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+
+</html>

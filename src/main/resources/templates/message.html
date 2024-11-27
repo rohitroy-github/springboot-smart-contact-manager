@@ -1,0 +1,10 @@
+<div data-th-if="${session.message}" data-th-fragment="messagebox"
+    class="mx-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+
+    <div>
+        <p data-th-text="${session.message}"
+            class="font-montserrat text-center block text-sm font-semibold text-gray-700"></p>
+    </div>
+
+    <th:block data-th:text="${@sessionHelper.removeMessage()}"></th:block>
+</div>

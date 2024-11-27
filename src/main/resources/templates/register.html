@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base :: parent(~{:: #content}, ~{:: title})}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+  <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
+</head>
+
+<body class="bg-gray-100 font-montserrat">
+
+  <section id="content" class="flex justify-center items-center min-h-screen">
+    <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-lg text-center">
+
+
+
+      <h1 class="text-2xl font-bold text-gray-900 mb-6">Sign Up</h1>
+            
+      <form novalidate data-th-action="@{'/register-user'}" method="POST" class="space-y-4" data-th-object="${userForm}">
+
+        <!-- Injecting Message Box Fragment -->
+        <div class="flex space-x-4">
+          <div class="w-full">
+            <div th:replace="~{message::messagebox}"></div>
+          </div>
+        </div>
+
+        <!-- User ID and Name Row -->
+        <div class="flex space-x-4">
+          <div class="w-full">
+            <label for="name" class="block text-sm font-semibold text-gray-700">Name</label>
+            <input data-th-field="*{name}" type="text" id="name" name="name" required
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900" />
+
+              <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-red-500 text-xs mt-1"></p>
+            </div>
+        </div>
+
+        <!-- Email and Phone Number Row -->
+        <div class="flex space-x-4">
+          <div class="w-1/2">
+            <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>
+            <input data-th-field="*{email}" type="email" id="email" name="email" required
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900" />
+
+              <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-red-500 text-xs mt-1"></p>
+          </div>
+          <div class="w-1/2">
+            <label for="phoneNumber" class="block text-sm font-semibold text-gray-700">Phone Number</label>
+            <input data-th-field="*{phoneNumber}" type="tel" id="phoneNumber" name="phoneNumber" required
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900" />
+
+              <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-red-500 text-xs mt-1"></p>
+          </div>
+        </div>
+
+        <!-- Password and Profile Picture Row -->
+        <div class="flex space-x-4">
+          <div class="w-1/2">
+            <label for="password" class="block text-sm font-semibold text-gray-700">New Password</label>
+            <input data-th-field="*{password}" type="password" id="password" name="password" required
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900" />
+
+              <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-red-500 text-xs mt-1"></p>
+          </div>
+          <div class="w-1/2">
+            <label for="profilePicture" class="block text-sm font-semibold text-gray-700">Profile Picture URL</label>
+            <input data-th-field="*{profilePicture}" type="url" id="profilePicture" name="profilePicture"
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900" />
+          </div>
+        </div>
+
+        <!-- Provider and Provider User ID Row -->
+        <!-- <div class="flex space-x-4">
+          <div class="w-1/2">
+            <label for="provider" class="block text-sm font-semibold text-gray-700">Provider</label>
+            <select id="provider" name="provider" required
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900">
+              <option value="SELF">Self</option>
+              <option value="GOOGLE">Google</option>
+              <option value="FACEBOOK">Facebook</option>
+            </select>
+          </div>
+          <div class="w-1/2">
+            <label for="providerUserId" class="block text-sm font-semibold text-gray-700">Provider User ID</label>
+            <input type="text" id="providerUserId" name="providerUserId"
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900" />
+          </div>
+        </div> -->
+
+        <!-- About Row (Full Width) -->
+        <div>
+          <label for="about" class="block text-sm font-semibold text-gray-700">About</label>
+          <textarea data-th-field="*{about}" id="about" name="about" rows="3"
+            class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"></textarea>
+
+            <p th:if="${#fields.hasErrors('about')}" th:errors="*{about}" class="text-red-500 text-xs mt-1"></p>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit"
+          class="w-full py-2 mt-6 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+          Sign Up
+        </button>
+      </form>
+
+      <p class="mt-4 text-sm text-gray-600">
+        Already have an account?
+        <a href="/login" class="text-gray-900 font-semibold hover:underline">Log In</a>
+      </p>
+    </div>
+  </section>
+
+</body>
+
+</html>
