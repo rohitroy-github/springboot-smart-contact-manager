@@ -57,21 +57,35 @@ public class UserServiceImpl implements UserService {
             String name = oAuthenticatedUser.getAttribute("name").toString();
             String profilePicture = oAuthenticatedUser.getAttribute("picture").toString();
 
-
             newUser.setUserId(UUID.randomUUID().toString());
             newUser.setName(name);
             newUser.setEmail(email);
             newUser.setProfilePicture(profilePicture);
             // :> setting dummy password for all oauthenticated users
             newUser.setPassword(passwordEncoder.encode("oauth_default_password"));
-            newUser.setAbout("I'm a new user authenticated using OAuth2.");
+            newUser.setAbout("I'm a new user authenticated using Google OAuth2.");
             newUser.setRoleList(List.of(AppConstants.ROLE_USER));
             newUser.setProvider(Providers.GOOGLE);
             newUser.setEnabled(true);
             newUser.setEmailVerified(true);
             newUser.setProviderUserId(oAuthenticatedUser.getName());
-        } else if (oAuthClient.equalsIgnoreCase("github")) { 
-            
+        } else if (oAuthClient.equalsIgnoreCase("github")) {
+            String email = oAuthenticatedUser.getAttribute("email").toString();
+            String name = oAuthenticatedUser.getAttribute("name").toString();
+            String profilePicture = oAuthenticatedUser.getAttribute("avatar_url").toString();
+
+            newUser.setUserId(UUID.randomUUID().toString());
+            newUser.setName(name);
+            newUser.setEmail(email);
+            newUser.setProfilePicture(profilePicture);
+            newUser.setPassword(passwordEncoder.encode("oauth_default_password"));
+            newUser.setAbout("I'm a new user authenticated using Github OAuth2.");
+            newUser.setRoleList(List.of(AppConstants.ROLE_USER));
+            newUser.setProvider(Providers.GITHUB);
+            newUser.setEnabled(true);
+            newUser.setEmailVerified(true);
+            newUser.setProviderUserId(oAuthenticatedUser.getName());
+
         }
 
         return userRepo.save(newUser);

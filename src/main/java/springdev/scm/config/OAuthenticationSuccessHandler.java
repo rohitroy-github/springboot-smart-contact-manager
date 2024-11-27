@@ -39,21 +39,21 @@ public class OAuthenticationSuccessHandler implements AuthenticationSuccessHandl
         logger.info("onAuthenticationSuccess_executing");
 
         // :> fetching the oauth2 client ?
-        var oAuth2AuthenticationToken = (OAuth2AuthenticationToken)authentication;
+        var oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
         String oAuthClientId = oAuth2AuthenticationToken.getAuthorizedClientRegistrationId();
+
         // :> [testing]
         logger.info(":> oauth2 client : {}", oAuthClientId);
 
         DefaultOAuth2User oAuthenticatedUser = (DefaultOAuth2User) authentication.getPrincipal();
 
+        // :> [testing]
+        oAuthenticatedUser.getAttributes().forEach((key, value) -> {
+            logger.info(key + " : " + value);
+        });
 
-        // oAuthenticatedUser.getAttributes().forEach((key, value) -> { 
-        //     logger.info(key + " : " + value);
-        // });
-        
-        // // :> extracting email attrubute from
-        String email = oAuthenticatedUser.getAttribute("email").toString();
-
+        // // :> extracting email attrubute from [GOOGLE]
+        String email = oAuthenticatedUser.getAttribute("email").toString(); // :> "email" attribute is common for both the providers
         // String name = oAuthenticatedUser.getAttribute("name").toString();
         // String profilePicture =
         // oAuthenticatedUser.getAttribute("picture").toString();
@@ -65,13 +65,15 @@ public class OAuthenticationSuccessHandler implements AuthenticationSuccessHandl
         User userWithSameEmail = userRepo.findByEmail(email).orElse(null);
         if (userWithSameEmail == null) {
 
-            // :> saving the newly authenticated user to db
+            logger.info(":> New user found.");
+
+            // :> saving user to DB
             User savedUser = userService.saveOAuthenticatedUser(oAuthenticatedUser, oAuthClientId);
 
-            logger.info("User successfully saved in DB");
+            logger.info(":> User has been successfully saved in DB.");
 
         } else {
-            logger.info("User already exists in DB.");
+            logger.info(":> User already exists in DB.");
 
         }
 
