@@ -50,11 +50,12 @@ public class UserServiceImpl implements UserService {
 
         User newUser = new User();
 
+        String email = oAuthenticatedUser.getAttribute("email").toString();
+        String name = oAuthenticatedUser.getAttribute("name").toString();
+
         // :> client == google
         if (oAuthClient.equalsIgnoreCase("google")) {
-            // :> extracting attributes from oAuthenticatedUser
-            String email = oAuthenticatedUser.getAttribute("email").toString();
-            String name = oAuthenticatedUser.getAttribute("name").toString();
+
             String profilePicture = oAuthenticatedUser.getAttribute("picture").toString();
 
             newUser.setUserId(UUID.randomUUID().toString());
@@ -70,8 +71,7 @@ public class UserServiceImpl implements UserService {
             newUser.setEmailVerified(true);
             newUser.setProviderUserId(oAuthenticatedUser.getName());
         } else if (oAuthClient.equalsIgnoreCase("github")) {
-            String email = oAuthenticatedUser.getAttribute("email").toString();
-            String name = oAuthenticatedUser.getAttribute("name").toString();
+
             String profilePicture = oAuthenticatedUser.getAttribute("avatar_url").toString();
 
             newUser.setUserId(UUID.randomUUID().toString());
