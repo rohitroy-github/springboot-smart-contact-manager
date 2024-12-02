@@ -78,12 +78,12 @@ public class PageController {
 
     }
 
-    // @RequestMapping(value = "/login-user", method = RequestMethod.POST)
+    // @RequestMapping(value = "/login-user", method = RequestMethod.POST) 
     // public String processLogin() {
 
     //     return "redirect:/user/profile";
 
-    // }
+    // } 
 
     @RequestMapping("/register")
     public String registerPage(Model model) {
