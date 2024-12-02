@@ -1,3 +1,41 @@
+<!-- <!DOCTYPE html>
+<html lang="en" th:replace="~{base :: parent(~{:: #content}, ~{:: title})}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile</title>
+  <link rel="stylesheet" th:href="@{'/css/output.css'}" />
+  <link rel="stylesheet" th:href="@{'/css/index.css'}" />
+</head>
+
+<body class="bg-gray-100 font-montserrat">
+  <section id="content" class="flex flex-col justify-center items-center min-h-screen text-center px-6">
+    <div class="max-w-4xl p-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">User Profile</h2>
+      <p class="text-gray-700 mb-6">Welcome to your profile, <span class="font-semibold text-gray-800" th:text="${loggedInUser.name}">User Name</span>.</p>
+
+      <div class="text-left text-gray-800 space-y-4">
+        <p><strong>User ID:</strong> <span th:text="${loggedInUser.userId}">12345</span></p>
+        <p><strong>Email:</strong> <span th:text="${loggedInUser.email}">user@example.com</span></p>
+        <p><strong>About:</strong> <span th:text="${loggedInUser.about}">Lorem ipsum dolor sit amet.</span></p>
+        <p><strong>Phone Number:</strong> <span th:text="${loggedInUser.phoneNumber}">123-456-7890</span></p>
+        <p><strong>Email Verified:</strong> <span th:text="${loggedInUser.emailVerified} ? 'Yes' : 'No'">No</span></p>
+        <p><strong>Phone Number Verified:</strong> <span th:text="${loggedInUser.phoneNumberVerified} ? 'Yes' : 'No'">No</span></p>
+        <p><strong>Provider:</strong> <span th:text="${loggedInUser.provider}">SELF</span></p>
+        <p><strong>Provider User ID:</strong> <span th:text="${loggedInUser.providerUserId}">Provider123</span></p>
+        <p><strong>Roles:</strong> <span th:text="${loggedInUser.roleList}">[ADMIN, USER]</span></p>
+      </div>
+
+      <div class="mt-8">
+        <a href="/dashboard" class="px-6 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700">Back to Dashboard</a>
+      </div>
+    </div>
+  </section>
+</body>
+
+</html> -->
+
 <!DOCTYPE html>
 <html lang="en" th:replace="~{base :: parent(~{:: #content}, ~{:: title})}">
 
@@ -5,19 +43,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>User Profile</title>
-  <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
-  <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
+  <link rel="stylesheet" th:href="@{'/css/output.css'}" />
+  <link rel="stylesheet" th:href="@{'/css/index.css'}" />
 </head>
 
 <body class="bg-gray-100 font-montserrat">
+  <section id="content" class="flex justify-center items-center min-h-screen px-6">
+    <!-- Main Content Section -->
+    <div class="flex justify-between w-full max-w-6xl">
+      <!-- Centered Welcome Text -->
+      <div class="flex items-center justify-center w-full">
+        <div class="text-center flex flex-col">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">User Profile</h2>
+          <p class="text-gray-700">
+            Welcome to your profile, <span class="font-semibold text-gray-800" th:text="${loggedInUser.name}">User Name</span>.
+          </p>
+        </div>
+      </div>
 
-  <section id="content" class="flex flex-col justify-center items-center min-h-screen text-center px-6">
-    <div class="max-w-4xl p-8">
-      <h2 class="text-3xl font-bold text-gray-900 mb-4">This is user profile</h2>
-      <p class="text-gray-700 mb-6">Welcome to the user profile page. Here, you can view and manage your details.</p>
+      <!-- Right Aligned Details Column -->
+      <div class="w-[40%] text-left text-gray-800 space-y-4">
+        <p><strong>User ID:</strong> <span th:text="${loggedInUser.userId}">12345</span></p>
+        <p><strong>Email:</strong> <span th:text="${loggedInUser.email}">user@example.com</span></p>
+        <p><strong>About:</strong> <span th:text="${loggedInUser.about}">Lorem ipsum dolor sit amet.</span></p>
+        <p><strong>Phone Number:</strong> <span th:text="${loggedInUser.phoneNumber}">123-456-7890</span></p>
+        <p><strong>Email Verified:</strong> <span th:text="${loggedInUser.emailVerified} ? 'Yes' : 'No'">No</span></p>
+        <p><strong>Phone Number Verified:</strong> <span th:text="${loggedInUser.phoneNumberVerified} ? 'Yes' : 'No'">No</span></p>
+        <p><strong>Provider:</strong> <span th:text="${loggedInUser.provider}">SELF</span></p>
+        <p><strong>Provider User ID:</strong> <span th:text="${loggedInUser.providerUserId}">Provider123</span></p>
+        <p><strong>Roles:</strong> <span th:text="${loggedInUser.roleList}">[ADMIN, USER]</span></p>
+      </div>
     </div>
   </section>
-
 </body>
 
 </html>
