@@ -23,13 +23,19 @@ public class RootController {
     @ModelAttribute
     public void addLoggedInUserInformation(Model model, Authentication authentication) {
 
+        if (authentication == null) {
+
+            return;
+
+        }
+
         String loggedInUserEmail = Helper.getEmailOfLoggedInUser(authentication);
 
         User loggedInUserData = userService.getUserByEmail(loggedInUserEmail);
 
         model.addAttribute("loggedInUser", loggedInUserData);
 
-        logger.info(":> [{}] > logged in", loggedInUserEmail);
+        logger.info(":> [{}] > user_logged_in", loggedInUserEmail);
 
     }
 
