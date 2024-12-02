@@ -11,7 +11,7 @@
 
 <body>
   <!-- navbar.html -->
-  <header th:fragment="navbar" class="bg-gray-900 text-white p-4 shadow-md">
+  <header th:fragment="logged_in_user_navbar" class="bg-gray-900 text-white p-4 shadow-md">
     <div class="container mx-auto flex justify-between items-center">
       <h1 class="text-xl font-bold">Smart Contact Manager</h1>
       <nav>
@@ -20,7 +20,9 @@
           <li><a href="/about" class="hover:text-gray-400">About</a></li>
           <li><a href="/services" class="hover:text-gray-400">Services</a></li>
           <li><a href="/contact" class="hover:text-gray-400">Contact</a></li>
-          <li><a href="/login" class="bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded">Login</a></li>
+          <li><a href="/user/dashboard" class="hover:text-gray-400">Dashboard</a></li>
+          <li><a href="/user/profile" class="hover:text-gray-400">Profile</a></li>
+          <li><a href="/logout" class="bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded">Logout</a></li>
         </ul>
       </nav>
     </div>
