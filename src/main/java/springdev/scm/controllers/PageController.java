@@ -65,7 +65,7 @@ public class PageController {
 
         System.out.println(":> showing contact page");
         model.addAttribute("name", "Rohit");
-        return "services";
+        return "contact";
 
     }
 
