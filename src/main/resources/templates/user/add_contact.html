@@ -1,63 +1,172 @@
 <!DOCTYPE html>
 <html lang="en" th:replace="~{base :: parent(~{::#content},~{::title})}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Contact</title>
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+    <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add Contact Page</title>
-  <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
-  <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
-</head>
+  <body class="bg-gray-100 font-montserrat">
+    <section id="content" class="flex justify-center items-center min-h-screen">
+      <div
+        class="bg-white shadow-md rounded-lg p-8 w-full max-w-xl text-center"
+      >
+        <h1 class="text-2xl font-bold text-gray-900 mb-6">Add New Contact</h1>
 
-<body class="bg-gray-100 font-montserrat">
+        <form
+          novalidate
+          data-th-action="@{'/add-new-contact'}"
+          data-th-method="POST"
+          class="space-y-4"
+        >
+          <!-- Name and Email Fields -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label
+                for="name"
+                class="block text-sm font-semibold text-gray-700"
+                >Name</label
+              >
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              />
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block text-sm font-semibold text-gray-700"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              />
+            </div>
+          </div>
 
-  <section id="content" class="flex justify-center items-center min-h-screen">
-    <div class="bg-white border-gray-500 shadow-lg rounded-lg p-8 w-full max-w-md text-center">
-      <h1 class="text-2xl font-bold text-gray-900 mb-6">Log In</h1>
-      <form data-th-method="POST" data-th-action="@{'/login-user'}" class="space-y-4">
-        <div>
-          <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>
-          <input type="email" id="email" name="email" required
-            class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
-            placeholder="test@gmail.com" />
-        </div>
+          <!-- Phone Number and Address Fields -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label
+                for="phoneNumber"
+                class="block text-sm font-semibold text-gray-700"
+                >Phone Number</label
+              >
+              <input
+                type="tel"
+                id="phoneNumber"
+                name="phoneNumber"
+                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              />
+            </div>
+            <div>
+              <label
+                for="address"
+                class="block text-sm font-semibold text-gray-700"
+                >Address</label
+              >
+              <input
+                type="text"
+                id="address"
+                name="address"
+                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              />
+            </div>
+          </div>
 
-        <div>
-          <label for="password" class="block text-sm font-semibold text-gray-700">Password</label>
-          <input type="password" id="password" name="password" required
-            class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900" />
-        </div>
+          <!-- Picture URL and LinkedIn Link Fields -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label
+                for="picture"
+                class="block text-sm font-semibold text-gray-700"
+                >Picture URL</label
+              >
+              <input
+                type="url"
+                id="picture"
+                name="picture"
+                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              />
+            </div>
+            <div>
+              <label
+                for="linkedInLink"
+                class="block text-sm font-semibold text-gray-700"
+                >LinkedIn Link</label
+              >
+              <input
+                type="url"
+                id="linkedInLink"
+                name="linkedInLink"
+                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              />
+            </div>
+          </div>
 
-        <button type="submit"
-          class="w-full py-2 mt-6 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
-          Log In
-        </button>
-      </form>
+          <!-- Website Link Field -->
+          <div>
+            <label
+              for="websiteLink"
+              class="block text-sm font-semibold text-gray-700"
+              >Website Link</label
+            >
+            <input
+              type="url"
+              id="websiteLink"
+              name="websiteLink"
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+            />
+          </div>
 
-      <p class="mt-4 text-sm text-gray-600">
-        Don’t have an account?
-        <a href="/register" class="text-gray-900 font-semibold hover:underline">Sign Up</a>
-      </p>
+          <!-- Description Field -->
+          <div>
+            <label
+              for="description"
+              class="block text-sm font-semibold text-gray-700"
+              >Description</label
+            >
+            <textarea
+              id="description"
+              name="description"
+              rows="3"
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+            ></textarea>
+          </div>
 
-      <!-- OAuth Buttons -->
-      <div class="mt-6">
-        <p class="text-sm text-gray-500 mb-4">Or log in with:</p>
-        <div class="flex justify-center space-x-4">
-          <a href="/oauth2/authorization/google"
-            class="cursor-pointer flex items-center justify-center w-1/2 py-2 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
-            <img src="/images/google-logo.svg" alt="Google" class="w-6 h-5 mr-2" />
-            Google
-          </a>
-          <a href="/oauth2/authorization/github"
-            class="cursor-pointer flex items-center justify-center w-1/2 py-2 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
-            <img src="/images/github-logo.svg" alt="GitHub" class="w-5 h-5 mr-2" />
-            GitHub
-          </a>
-        </div>
+          <!-- Favourite Field -->
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              id="favourite"
+              name="favourite"
+              class="mr-2"
+            />
+            <label
+              for="favourite"
+              class="text-sm font-semibold text-gray-700"
+              >Mark as Favourite</label
+            >
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="w-full py-2 mt-6 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          >
+            Save Contact
+          </button>
+        </form>
       </div>
-    </div>
-  </section>
-
-</body>
-
+    </section>
+  </body>
 </html>
