@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+    <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
+  </head>
+
+  <body>
+    <section
+      th:fragment="sidebar"
+      class="flex w-full text-gray-800 flex-col min-h-screen p-6"
+    >
+      <div class="flex flex-col space-y-6">
+        <!-- Logo or Header Section -->
+        <!-- <h2 class="text-2xl font-bold">Smart Contact Manager</h2> -->
+        <nav>
+          <ul class="space-y-4">
+            <li>
+              <a
+                href="/dashboard"
+                class="text-gray-800 hover:bg-gray-200 px-3 py-2 rounded-md block"
+                >Dashboard</a
+              >
+            </li>
+            <li>
+              <a
+                href="/contacts"
+                class="text-gray-800 hover:bg-gray-200 px-3 py-2 rounded-md block"
+                >Contacts</a
+              >
+            </li>
+            <li>
+              <a
+                href="/services"
+                class="text-gray-800 hover:bg-gray-200 px-3 py-2 rounded-md block"
+                >Services</a
+              >
+            </li>
+            <li>
+              <a
+                href="/about"
+                class="text-gray-800 hover:bg-gray-200 px-3 py-2 rounded-md block"
+                >About</a
+              >
+            </li>
+            <li>
+              <a
+                href="/logout"
+                class="text-gray-800 hover:bg-gray-200 px-3 py-2 rounded-md block"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+  </body>
+</html>

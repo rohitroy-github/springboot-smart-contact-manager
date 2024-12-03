@@ -87,31 +87,30 @@ public class SecurityConfig {
         httpSecurity.formLogin(formLogin -> {
             formLogin.loginPage("/login");
             formLogin.loginProcessingUrl("/login-user");
-            formLogin.successForwardUrl("/user/profile");
+            formLogin.successForwardUrl("/user/dashboard");
             formLogin.failureForwardUrl("/login?error=true");
-            formLogin.defaultSuccessUrl("/user/profile");
+            formLogin.defaultSuccessUrl("/user/dashboard");
             formLogin.usernameParameter("email");
             formLogin.passwordParameter("password");
         });
 
+        // :> setting up oauth2 login methods
+        httpSecurity.oauth2Login(oauth -> {
+            oauth.loginPage("/login");
+            oauth.successHandler(oAuthenticationSuccessHandler);
+        });
+
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
-        httpSecurity.logout(logoutForm -> { 
+        httpSecurity.logout(logoutForm -> {
             logoutForm.logoutUrl("/logout");
             logoutForm.logoutSuccessUrl("/login?logout=true");
         });
 
         // :> oauth2 configuration
-        
+
         // :> making oauth2 login as the default login method
         // httpSecurity.oauth2Login(Customizer.withDefaults());
-
-        // :> setting up oauth2 login methods
-        httpSecurity.oauth2Login(oauth -> { 
-            oauth.loginPage("/login");
-            oauth.successHandler(oAuthenticationSuccessHandler);
-        });
-
 
         return httpSecurity.build();
     }

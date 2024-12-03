@@ -1,4 +1,3 @@
-<!-- base.html -->
 <!DOCTYPE html>
 <html lang="en" th:fragment="parent(content, title)">
   <head>
@@ -9,28 +8,37 @@
     <link rel="stylesheet" th:href="@{/css/index.css}" />
   </head>
 
-  <body class="font-montserrat bg-gray-100 text-gray-800">
-    <!--  user is logged in : navbar -->
-    <div th:if="${loggedInUser}">
-      <div
-        data-th-replace="~{user/navbar::logged_in_user_navbar}"
-      ></div>
+  <body class="bg-gray-200 font-montserrat">
+    <div class="flex flex-col min-h-screen">
+      <!-- Navbar -->
+      <div th:if="${loggedInUser}">
+        <div data-th-replace="~{user/navbar::logged_in_user_navbar}"></div>
+      </div>
+
+      <div th:unless="${loggedInUser}">
+        <div data-th-replace="~{navbar :: navbar}"></div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex w-full">
+        <!-- Sidebar -->
+        <div
+          class="border-r-2 border-gray-200 shadow-lg w-1/6"
+          th:if="${loggedInUser}"
+        >
+          <div th:replace="~{user/sidebar :: sidebar}"></div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="w-5/6">
+          <div th:replace="${content}"></div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div>
+        <div th:replace="~{footer :: footer}"></div>
+      </div>
     </div>
-
-    <!-- user is not logged : navbar -->
-    <div th:unless="${loggedInUser}">
-      <div data-th-replace="~{navbar :: navbar}"></div>
-    </div>
-
-    <!-- Content Section -->
-    <section
-      th:replace="${content}"
-      class="container mx-auto p-4 my-8 bg-white shadow-lg rounded-md"
-    >
-      <!-- Content will be injected here -->
-    </section>
-
-    <!-- Include Footer -->
-    <div th:replace="~{footer :: footer}"></div>
   </body>
 </html>
