@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import springdev.scm.entities.Contact;
-import springdev.scm.entities.User;
 import springdev.scm.forms.ContactForm;
-import springdev.scm.helper.Helper;
 import springdev.scm.services.ContactService;
-import springdev.scm.services.UserService;
 
 @Controller
 @RequestMapping("user/contact")
@@ -25,9 +22,6 @@ public class ContactController {
 
     @Autowired
     private ContactService contactService;
-
-    @Autowired
-    private UserService userService;
 
     @RequestMapping(value = "add")
     public String addContactView(Model model) {
@@ -45,36 +39,9 @@ public class ContactController {
 
         System.out.println(contactForm);
 
-        logger.info(":> processing new contact");
+        logger.info(":> processing_new_contact");
 
-        Contact newContact = new Contact();
-        newContact.setName(contactForm.getName());
-        newContact.setEmail(contactForm.getEmail());
-        newContact.setPhoneNumber(contactForm.getPhoneNumber());
-        newContact.setAddress(contactForm.getAddress());
-        newContact.setDescription(contactForm.getDescription());
-        newContact.setWebsiteLink(contactForm.getWebsiteLink());
-        newContact.setLinkedInLink(contactForm.getLinkedInLink());
-        newContact.setFavourite(contactForm.isFavourite());
-
-        // :> fetching user
-
-        String userEmail = Helper.getEmailOfLoggedInUser(authentication);
-        User associatedUser = userService.getUserByEmail(userEmail);
-        newContact.setUser(associatedUser);
-
-        // Handle profile image upload
-        // if (contactForm.getProfileImage() != null &&
-        // !contactForm.getProfileImage().isEmpty()) {
-        // // Assuming a service for file upload
-        // String uploadedFilePath =
-        // fileUploadService.uploadFile(contactForm.getProfileImage());
-        // newContact.setPicture(uploadedFilePath);
-        // }
-
-        newContact.setPicture("https://avatars.githubusercontent.com/u/68563695?v=4");
-
-        contactService.save(newContact);
+        Contact savedContact = contactService.save(contactForm, authentication);
 
         return "redirect:/user/contact/add";
     }
