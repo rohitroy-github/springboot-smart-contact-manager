@@ -9,19 +9,16 @@ import jakarta.servlet.http.HttpSession;
 @Component
 public class SessionHelper {
 
-    // :> removing message attribute from session storage
-    public static void removeMessage() {
+    // Removing message attribute from session storage
+    public void removeMessage() {
         try {
-            System.out.println("removing message from session");
-            HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()
-                    .getSession();
+            System.out.println("Removing message from session");
+            HttpSession session = ((ServletRequestAttributes) RequestContextHolder
+                    .getRequestAttributes()).getRequest().getSession();
             session.removeAttribute("message");
         } catch (Exception e) {
-            System.out.println("Error in SessionHelper: " + e);
-            ;
+            System.out.println("Error in SessionHelper: " + e.getMessage());
             e.printStackTrace();
         }
- 
     }
-
 }

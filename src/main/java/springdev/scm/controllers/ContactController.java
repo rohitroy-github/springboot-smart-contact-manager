@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jakarta.servlet.http.HttpSession;
 import springdev.scm.entities.Contact;
 import springdev.scm.forms.ContactForm;
 import springdev.scm.services.ContactService;
@@ -35,15 +37,26 @@ public class ContactController {
     }
 
     @RequestMapping(value = "save-contact", method = RequestMethod.POST)
-    public String processAddNewContact(@ModelAttribute ContactForm contactForm, Authentication authentication) {
+    public String processAddNewContact(@ModelAttribute ContactForm contactForm, Authentication authentication,
+            BindingResult rBindingResult,
+            HttpSession session) {
 
         System.out.println(contactForm);
 
-        logger.info(":> processing_new_contact");
+        if (rBindingResult.hasErrors()) {
+            return "user/contact/add";
+        } else {
 
-        Contact savedContact = contactService.save(contactForm, authentication);
+            logger.info(":> processing_new_contact");
 
-        return "redirect:/user/contact/add";
+            Contact savedContact = contactService.save(contactForm, authentication);
+
+            session.setAttribute("message", "Contact saved successfully.");
+
+            return "redirect:/user/contact/add";
+
+        }
+
     }
 
 }

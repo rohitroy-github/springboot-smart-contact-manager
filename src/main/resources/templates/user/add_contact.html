@@ -1,184 +1,108 @@
 <!DOCTYPE html>
 <html lang="en" th:replace="~{base :: parent(~{::#content},~{::title})}">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add New Contact</title>
-    <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
-    <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
-  </head>
 
-  <body class="bg-gray-100 font-montserrat">
-    <section id="content" class="flex justify-center items-center min-h-screen">
-      <div
-        class="bg-white shadow-md rounded-lg p-8 w-full max-w-xl text-center"
-      >
-        <h1 class="text-2xl font-bold text-gray-900 mb-6">Add New Contact</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add New Contact</title>
+  <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+  <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
+</head>
 
-        <form
-          novalidate
-          data-th-method="POST"
-          class="space-y-4"
-          data-th-action="@{'/user/contact/save-contact'}"
-          data-th-object="${contactFormData}"
-          enctype="multipart/form-data"
-        >
-          <!-- Name and Email Fields -->
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label
-                for="name"
-                class="block text-sm font-semibold text-gray-700"
-                >Contact Name</label
-              >
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
-                data-th-field="*{name}"
-              />
-            </div>
-            <div>
-              <label
-                for="email"
-                class="block text-sm font-semibold text-gray-700"
-                >Contact Email</label
-              >
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
-                data-th-field="*{email}"
-              />
-            </div>
+<body class="bg-gray-100 font-montserrat">
+  <section id="content" class="flex justify-center items-center min-h-screen">
+    <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-xl text-center">
+      <h1 class="text-2xl font-bold text-gray-900 mb-6">Add New Contact</h1>
+
+      <form novalidate data-th-method="POST" class="space-y-4" data-th-action="@{'/user/contact/save-contact'}"
+        data-th-object="${contactFormData}" enctype="multipart/form-data">
+
+        <!-- Injecting Message Box Fragment -->
+        <div class="flex space-x-4">
+          <div class="w-full">
+            <div th:replace="~{message::messagebox}"></div>
           </div>
+        </div>
 
-          <!-- Phone Number and Address Fields -->
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label
-                for="phoneNumber"
-                class="block text-sm font-semibold text-gray-700"
-                >Contact Number</label
-              >
-              <input
-                type="tel"
-                id="phoneNumber"
-                name="phoneNumber"
-                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
-                data-th-field="*{phoneNumber}"
-              />
-            </div>
-            <div>
-              <label
-                for="address"
-                class="block text-sm font-semibold text-gray-700"
-                >Contact Address</label
-              >
-              <input
-                type="text"
-                id="address"
-                name="address"
-                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
-                data-th-field="*{address}"
-              />
-            </div>
-          </div>
-
-          <!-- Website and LinkedIn Fields -->
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label
-                for="websiteLink"
-                class="block text-sm font-semibold text-gray-700"
-                >Contact's Website</label
-              >
-              <input
-                type="url"
-                id="websiteLink"
-                name="websiteLink"
-                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
-                data-th-field="*{websiteLink}"
-              />
-            </div>
-            <div>
-              <label
-                for="linkedInLink"
-                class="block text-sm font-semibold text-gray-700"
-                >Contact's LinkedIn Profile</label
-              >
-              <input
-                type="url"
-                id="linkedInLink"
-                name="linkedInLink"
-                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
-                data-th-field="*{linkedInLink}"
-              />
-            </div>
-          </div>
-
-          <!-- Description Field -->
+        <!-- Name and Email Fields -->
+        <div class="grid grid-cols-2 gap-4">
           <div>
-            <label
-              for="description"
-              class="block text-sm font-semibold text-gray-700"
-              >Contact Description</label
-            >
-            <textarea
-              id="description"
-              name="description"
-              rows="3"
+            <label for="name" class="block text-sm font-semibold text-gray-700">Contact Name</label>
+            <input type="text" id="name" name="name" required
               class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
-              data-th-field="*{description}"
-            ></textarea>
+              data-th-field="*{name}" />
           </div>
-
-          <!-- Profile Image Upload -->
           <div>
-            <label
-              for="profileImage"
-              class="block text-sm font-semibold text-gray-700"
-              >Contact Profile Picture</label
-            >
-            <input
-              type="file"
-              id="profileImage"
-              name="profileImage"
-              accept="image/*"
+            <label for="email" class="block text-sm font-semibold text-gray-700">Contact Email</label>
+            <input type="email" id="email" name="email" required
               class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
-              data-th-field="*{profileImage}"
-            />
+              data-th-field="*{email}" />
           </div>
+        </div>
 
-          <!-- Favourite Field -->
-          <div class="flex items-center">
-            <input
-              type="checkbox"
-              id="favourite"
-              name="favourite"
-              class="mr-2"
-              data-th-field="*{favourite}"
-            />
-            <label
-              for="favourite"
-              class="text-sm font-semibold text-gray-700"
-              >Is it a favourite contact?</label
-            >
+        <!-- Phone Number and Address Fields -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="phoneNumber" class="block text-sm font-semibold text-gray-700">Contact Number</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber"
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              data-th-field="*{phoneNumber}" />
           </div>
+          <div>
+            <label for="address" class="block text-sm font-semibold text-gray-700">Contact Address</label>
+            <input type="text" id="address" name="address"
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              data-th-field="*{address}" />
+          </div>
+        </div>
 
-          <!-- Submit Button -->
-          <button
-            type="submit"
-            class="w-full py-2 mt-6 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          >
-            Save Contact
-          </button>
-        </form>
-      </div>
-    </section>
-  </body>
+        <!-- Website and LinkedIn Fields -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="websiteLink" class="block text-sm font-semibold text-gray-700">Contact's Website</label>
+            <input type="url" id="websiteLink" name="websiteLink"
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              data-th-field="*{websiteLink}" />
+          </div>
+          <div>
+            <label for="linkedInLink" class="block text-sm font-semibold text-gray-700">Contact's LinkedIn
+              Profile</label>
+            <input type="url" id="linkedInLink" name="linkedInLink"
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              data-th-field="*{linkedInLink}" />
+          </div>
+        </div>
+
+        <!-- Description Field -->
+        <div>
+          <label for="description" class="block text-sm font-semibold text-gray-700">Contact Description</label>
+          <textarea id="description" name="description" rows="3"
+            class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+            data-th-field="*{description}"></textarea>
+        </div>
+
+        <!-- Profile Image Upload -->
+        <div>
+          <label for="profileImage" class="block text-sm font-semibold text-gray-700">Contact Profile Picture</label>
+          <input type="file" id="profileImage" name="profileImage" accept="image/*"
+            class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+            data-th-field="*{profileImage}" />
+        </div>
+
+        <!-- Favourite Field -->
+        <div class="flex items-center">
+          <input type="checkbox" id="favourite" name="favourite" class="mr-2" data-th-field="*{favourite}" />
+          <label for="favourite" class="text-sm font-semibold text-gray-700">Is it a favourite contact?</label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit"
+          class="w-full py-2 mt-6 bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+          Save Contact
+        </button>
+      </form>
+    </div>
+  </section>
+</body>
+
 </html>
