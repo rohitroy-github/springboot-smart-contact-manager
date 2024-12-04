@@ -17,9 +17,11 @@
 
         <form
           novalidate
-          data-th-action="@{'/add-new-contact'}"
           data-th-method="POST"
           class="space-y-4"
+          data-th-action="@{'/user/contact/save-contact'}"
+          data-th-object="${contactFormData}"
+          enctype="multipart/form-data"
         >
           <!-- Name and Email Fields -->
           <div class="grid grid-cols-2 gap-4">
@@ -27,7 +29,7 @@
               <label
                 for="name"
                 class="block text-sm font-semibold text-gray-700"
-                >Name</label
+                >Contact Name</label
               >
               <input
                 type="text"
@@ -35,13 +37,14 @@
                 name="name"
                 required
                 class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+                data-th-field="*{name}"
               />
             </div>
             <div>
               <label
                 for="email"
                 class="block text-sm font-semibold text-gray-700"
-                >Email</label
+                >Contact Email</label
               >
               <input
                 type="email"
@@ -49,6 +52,7 @@
                 name="email"
                 required
                 class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+                data-th-field="*{email}"
               />
             </div>
           </div>
@@ -59,73 +63,62 @@
               <label
                 for="phoneNumber"
                 class="block text-sm font-semibold text-gray-700"
-                >Phone Number</label
+                >Contact Number</label
               >
               <input
                 type="tel"
                 id="phoneNumber"
                 name="phoneNumber"
                 class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+                data-th-field="*{phoneNumber}"
               />
             </div>
             <div>
               <label
                 for="address"
                 class="block text-sm font-semibold text-gray-700"
-                >Address</label
+                >Contact Address</label
               >
               <input
                 type="text"
                 id="address"
                 name="address"
                 class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+                data-th-field="*{address}"
               />
             </div>
           </div>
 
-          <!-- Picture URL and LinkedIn Link Fields -->
+          <!-- Website and LinkedIn Fields -->
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label
-                for="picture"
+                for="websiteLink"
                 class="block text-sm font-semibold text-gray-700"
-                >Picture URL</label
+                >Contact's Website</label
               >
               <input
                 type="url"
-                id="picture"
-                name="picture"
+                id="websiteLink"
+                name="websiteLink"
                 class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+                data-th-field="*{websiteLink}"
               />
             </div>
             <div>
               <label
                 for="linkedInLink"
                 class="block text-sm font-semibold text-gray-700"
-                >LinkedIn Link</label
+                >Contact's LinkedIn Profile</label
               >
               <input
                 type="url"
                 id="linkedInLink"
                 name="linkedInLink"
                 class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+                data-th-field="*{linkedInLink}"
               />
             </div>
-          </div>
-
-          <!-- Website Link Field -->
-          <div>
-            <label
-              for="websiteLink"
-              class="block text-sm font-semibold text-gray-700"
-              >Website Link</label
-            >
-            <input
-              type="url"
-              id="websiteLink"
-              name="websiteLink"
-              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
-            />
           </div>
 
           <!-- Description Field -->
@@ -133,14 +126,32 @@
             <label
               for="description"
               class="block text-sm font-semibold text-gray-700"
-              >Description</label
+              >Contact Description</label
             >
             <textarea
               id="description"
               name="description"
               rows="3"
               class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              data-th-field="*{description}"
             ></textarea>
+          </div>
+
+          <!-- Profile Image Upload -->
+          <div>
+            <label
+              for="profileImage"
+              class="block text-sm font-semibold text-gray-700"
+              >Contact Profile Picture</label
+            >
+            <input
+              type="file"
+              id="profileImage"
+              name="profileImage"
+              accept="image/*"
+              class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-gray-900"
+              data-th-field="*{profileImage}"
+            />
           </div>
 
           <!-- Favourite Field -->
@@ -150,11 +161,12 @@
               id="favourite"
               name="favourite"
               class="mr-2"
+              data-th-field="*{favourite}"
             />
             <label
               for="favourite"
               class="text-sm font-semibold text-gray-700"
-              >Mark as Favourite</label
+              >Is it a favourite contact?</label
             >
           </div>
 
