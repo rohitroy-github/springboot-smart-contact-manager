@@ -52,17 +52,23 @@ public class ContactServiceImpl implements ContactService {
         newContact.setUser(associatedUser);
 
         // if (contactForm.getContactImage() != null &&
-        //         !contactForm.getContactImage().isEmpty()) {
+        // !contactForm.getContactImage().isEmpty()) {
 
-        //     logger.info("uploaded_file : {}", contactForm.getContactImage().getOriginalFilename());
+        // logger.info("uploaded_file : {}",
+        // contactForm.getContactImage().getOriginalFilename());
 
-        //     // :> fucntionality to store image in cloud and fetching the URL
+        // // :> fucntionality to store image in cloud and fetching the URL
         // }
 
         // newContact.setPicture("https://avatars.githubusercontent.com/u/68563695?v=4");
 
+        if (contactForm.getContactImage() == null || contactForm.getContactImage().isEmpty()) {
+            newContact.setPicture("https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg");
+        } else {
+            newContact.setPicture(contactForm.getContactImage());
+        }
+        
         logger.info("data : {}", newContact);
-
 
         return contactRepo.save(newContact);
 
