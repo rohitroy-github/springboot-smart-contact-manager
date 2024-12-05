@@ -44,6 +44,8 @@ public class ContactController {
         System.out.println(contactForm);
 
         if (rBindingResult.hasErrors()) {
+            session.setAttribute("message", "Please recheck the data entered.");
+
             return "user/contact/add";
         } else {
 

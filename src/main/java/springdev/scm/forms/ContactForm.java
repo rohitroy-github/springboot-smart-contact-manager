@@ -1,6 +1,6 @@
 package springdev.scm.forms;
 
-import org.springframework.web.multipart.MultipartFile;
+// import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +25,7 @@ public class ContactForm {
     private String websiteLink;
     private String linkedInLink;
     private boolean favourite;
-    private MultipartFile profileImage;
+    private String contactImage;
+    // private MultipartFile contactImage;
 
 }
