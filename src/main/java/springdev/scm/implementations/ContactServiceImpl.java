@@ -118,4 +118,11 @@ public class ContactServiceImpl implements ContactService {
         throw new UnsupportedOperationException("Unimplemented method 'searchByName'");
     }
 
+    @Override
+    public List<Contact> searchByUserAndKeyword(String userId, String keyword) {
+        return contactRepo.findByUserIdAndKeyword(userId, keyword);
+    }
+    
+    
+
 }

@@ -4,51 +4,132 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>All Contacts</title>
-    <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
-    <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
+
+    <script type="text/javascript" th:src="@{/js/search_contacts.js}"></script>
   </head>
 
-  <body class="font-montserrat">
-    <section
-      id="content"
-      class="flex flex-col w-full items-center min-h-screen text-center p-12"
-    >
-      <div class="max-w-6xl w-full">
+  <body class="font-montserrat bg-gray-100">
+    <section id="content" class="flex flex-col items-center min-h-screen p-8">
+      <div class="max-w-7xl w-full text-center">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Your Contacts</h2>
         <p class="text-gray-700 mb-6">
-          Below is a list of all your saved contacts. You can manage them from here.
+          Below is a list of all your saved contacts. You can search, update, or
+          delete them.
         </p>
 
-        <!-- Display Contacts -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-          <div
-            class="p-5 border rounded-lg shadow-xl bg-white"
-            th:each="contact : ${contacts}"
+        <!-- Search Bar -->
+        <div class="mb-4 flex justify-center items-center">
+          <form
+            action="/user/contact/all-contacts"
+            method="get"
+            class="flex items-center justify-center w-1/2"
           >
-            <div class="mb-4">
-              <img
-                th:src="${contact.picture != null ? contact.picture : 'https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg'}"
-                alt="Contact Image"
-                class="w-20 h-20 mx-auto rounded-full"
+            <div class="flex w-full">
+              <input
+                type="text"
+                name="search"
+                placeholder="Search contacts..."
+                class="w-3/4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                th:value="${param.search}"
               />
-            </div>
-            <h3 class="text-lg font-bold text-gray-800" th:text="${contact.name}">Contact Name</h3>
-            <p class="text-gray-600" th:text="${contact.email}">Contact Email</p>
-            <p class="text-gray-600" th:text="${contact.phoneNumber}">Contact Phone</p>
-            <div class="mt-4">
-              <a
-                th:href="@{'/user/contact/edit/' + ${contact.id}}"
-                class="text-blue-500 hover:underline"
-                >Edit</a
+              <button
+                type="submit"
+                class="w-1/4 px-4 py-2 bg-white text-gray-700 hover:bg-gray-200 transition rounded-md ml-2"
               >
-              <span class="mx-2 text-gray-400">|</span>
-              <a
-                th:href="@{'/user/contact/delete/' + ${contact.id}}"
-                class="text-red-500 hover:underline"
-                >Delete</a
-              >
+                Search
+              </button>
             </div>
-          </div>
+          </form>
+        </div>
+
+        <!-- Scrollable Table -->
+        <div class="overflow-x-auto">
+          <table
+            class="min-w-full bg-white border border-gray-200 rounded-lg text-left"
+          >
+            <thead class="bg-gray-200">
+              <tr>
+                <th class="px-4 py-2 text-left text-gray-700 font-medium">
+                  Picture
+                </th>
+                <th class="px-4 py-2 text-left text-gray-700 font-medium">
+                  Name
+                </th>
+                <th class="px-4 py-2 text-left text-gray-700 font-medium">
+                  Email
+                </th>
+                <th class="px-4 py-2 text-left text-gray-700 font-medium">
+                  Phone
+                </th>
+                <th class="px-4 py-2 text-left text-gray-700 font-medium">
+                  Address
+                </th>
+                <th class="px-4 py-2 text-left text-gray-700 font-medium">
+                  Favourite
+                </th>
+                <th class="px-4 py-2 text-left text-gray-700 font-medium">
+                  LinkedIn
+                </th>
+                <th class="px-4 py-2 text-left text-gray-700 font-medium">
+                  Website
+                </th>
+                <th class="px-4 py-2 text-left text-gray-700 font-medium">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody id="contactsTable" th:each="contact : ${contacts}">
+              <tr class="border-b">
+                <td class="px-4 py-2">
+                  <img
+                    th:src="${contact.picture != null ? contact.picture : 'https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg'}"
+                    alt="Contact Image"
+                    class="w-12 h-12 rounded-full"
+                  />
+                </td>
+                <td class="px-4 py-2" th:text="${contact.name}">
+                  Contact Name
+                </td>
+                <td class="px-4 py-2" th:text="${contact.email}">
+                  Contact Email
+                </td>
+                <td class="px-4 py-2" th:text="${contact.phoneNumber}">
+                  Contact Phone
+                </td>
+                <td class="px-4 py-2" th:text="${contact.address}">
+                  Contact Address
+                </td>
+                <td class="px-4 py-2">
+                  <i
+                    class="fas fa-star"
+                    th:classappend="${contact.favourite ? 'text-yellow-500' : 'text-gray-400'}"
+                  ></i>
+                </td>
+                <td class="px-4 py-2">
+                  <a th:href="${contact.linkedInLink}" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                </td>
+                <td class="px-4 py-2">
+                  <a th:href="${contact.websiteLink}" target="_blank">
+                    <i class="fas fa-globe"></i>
+                  </a>
+                </td>
+                <td class="px-4 py-2">
+                  <a
+                    th:href="@{'/user/contact/edit/' + ${contact.id}}"
+                    class="px-3 py-1 text-sm border border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition"
+                    >Edit</a
+                  >
+                  <a
+                    th:href="@{'/user/contact/delete/' + ${contact.id}}"
+                    class="px-3 py-1 text-sm border border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition ml-2"
+                    >Delete</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>

@@ -21,4 +21,6 @@ public interface ContactService {
 
     List<Contact> getByUserId(String userId);
 
+    List<Contact> searchByUserAndKeyword(String userId, String keyword);
+
 }

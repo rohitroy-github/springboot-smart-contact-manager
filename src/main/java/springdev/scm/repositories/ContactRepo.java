@@ -18,4 +18,11 @@ public interface ContactRepo extends JpaRepository<Contact, String> {
     @Query("SELECT c FROM contact c WHERE c.user.userId = :userId")
     List<Contact> findByUserId(@Param("userId") String userId);
 
+    @Query("SELECT c FROM contact c WHERE c.user.userId = :userId AND " +
+    "(LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+    "LOWER(c.email) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+    "LOWER(c.phoneNumber) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+List<Contact> findByUserIdAndKeyword(String userId, String keyword);
+
+
 }

@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import springdev.scm.entities.Contact;
@@ -27,7 +28,7 @@ public class ContactController {
 
     private Logger logger = LoggerFactory.getLogger(ContactController.class);
 
-        @Autowired
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -69,18 +70,30 @@ public class ContactController {
 
     }
 
-    @RequestMapping(value = "all-contacts")
-    public String viewContacts(Model model, Authentication authentication) {
+    @RequestMapping(value = "all-contacts", method = RequestMethod.GET)
+    public String viewContacts(
+            @RequestParam(value = "search", required = false) String search,
+            Model model,
+            Authentication authentication) {
         // Get the email of the logged-in user
         String userEmail = Helper.getEmailOfLoggedInUser(authentication);
         User loggedInUser = userService.getUserByEmail(userEmail);
-    
+
         // Fetch contacts by user ID
-        List<Contact> contacts = contactService.getByUserId(loggedInUser.getUserId());
+        List<Contact> contacts;
+        if (search != null && !search.isEmpty()) {
+            // Search for contacts based on the query
+            contacts = contactService.searchByUserAndKeyword(loggedInUser.getUserId(), search);
+        } else {
+            // Fetch all contacts if no search query is provided
+            contacts = contactService.getByUserId(loggedInUser.getUserId());
+        }
+
+
         model.addAttribute("contacts", contacts);
-    
+
         logger.info(":> showing all contacts for user: {}", loggedInUser.getName());
-    
+
         return "user/all_contacts";
     }
 
