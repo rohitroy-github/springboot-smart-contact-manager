@@ -11,7 +11,7 @@
   <body class="font-montserrat">
     <section
       id="content"
-      class="flex flex-col w-full justify-center items-center min-h-screen text-center p-6"
+      class="flex flex-col w-full items-center min-h-screen text-center p-12"
     >
       <div class="max-w-6xl w-full">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Your Contacts</h2>
@@ -20,9 +20,9 @@
         </p>
 
         <!-- Display Contacts -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-5">
           <div
-            class="p-6 border rounded-lg shadow hover:shadow-lg transition"
+            class="p-5 border rounded-lg shadow-xl bg-white"
             th:each="contact : ${contacts}"
           >
             <div class="mb-4">
