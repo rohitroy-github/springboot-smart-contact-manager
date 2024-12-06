@@ -4,20 +4,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact Page</title>
-  <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
-  <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
+  <title>About Developer</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="bg-gray-100 font-montserrat">
 
   <section id="content" class="flex flex-col justify-center items-center min-h-screen text-center px-6">
     <div class="max-w-4xl p-8">
-      <h2 class="text-3xl font-bold text-gray-900 mb-4">Contact Page</h2>
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">About the Developer</h2>
+
       <p class="text-gray-700 mb-6">
-        Hello, <span class="font-semibold text-gray-800" th:text="${loggedInUser.name}">User Name</span>.
-        Here you can view and manage your contact information.
+        My name is <span class="font-semibold text-gray-800">Rohit Roy</span>, the developer of this application.
+        I created this platform to help you manage your contacts efficiently.
       </p>
+      <p class="text-gray-700 mb-6">
+        If you'd like to connect with me or explore more of my work, feel free to visit the links below:
+      </p>
+      <div class="flex flex-col items-center space-y-4">
+        <a href="https://linktr.ee/rohitroy_r" target="_blank"
+          class="w-1/2 flex items-center justify-center px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 transition">
+          <i class="fas fa-link mr-2"></i> Wanna know more about me ?
+        </a>
+        <a href="https://github.com/rohitroy-github/springboot-smart-contact-manager" target="_blank"
+          class="w-1/2 flex items-center justify-center px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 transition">
+          <i class="fab fa-github mr-2"></i> Code is available on Github
+        </a>
+      </div>
     </div>
   </section>
 

@@ -60,10 +60,10 @@ public class PageController {
     }
 
     // routing for /contact
-    @RequestMapping("/contact")
+    @RequestMapping("/developer-section")
     public String contactPage(Model model) {
 
-        System.out.println(":> showing contact page");
+        System.out.println(":> showing developer-section page");
         model.addAttribute("name", "Rohit");
         return "contact";
 
