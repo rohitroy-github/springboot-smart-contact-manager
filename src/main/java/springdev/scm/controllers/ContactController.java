@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,11 @@ import springdev.scm.forms.ContactForm;
 import springdev.scm.helper.Helper;
 import springdev.scm.services.ContactService;
 import springdev.scm.services.UserService;
+
+// :> pagination modules
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Controller
 @RequestMapping("user/contact")
@@ -72,25 +78,32 @@ public class ContactController {
 
     @RequestMapping(value = "all-contacts", method = RequestMethod.GET)
     public String viewContacts(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "8") int size,
             @RequestParam(value = "search", required = false) String search,
-            Model model,
-            Authentication authentication) {
+            Model model, Authentication authentication) {
+
         // Get the email of the logged-in user
         String userEmail = Helper.getEmailOfLoggedInUser(authentication);
         User loggedInUser = userService.getUserByEmail(userEmail);
 
-        // Fetch contacts by user ID
-        List<Contact> contacts;
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Contact> contacts;
+
+
         if (search != null && !search.isEmpty()) {
             // Search for contacts based on the query
-            contacts = contactService.searchByUserAndKeyword(loggedInUser.getUserId(), search);
+            contacts = contactService.searchByUserAndKeyword(loggedInUser.getUserId(), search, pageable);
         } else {
             // Fetch all contacts if no search query is provided
-            contacts = contactService.getByUserId(loggedInUser.getUserId());
+            contacts = contactService.getByUserId(loggedInUser.getUserId(), pageable);
+
         }
 
-
         model.addAttribute("contacts", contacts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", contacts.getTotalPages());
+        model.addAttribute("search", search);
 
         logger.info(":> showing all contacts for user: {}", loggedInUser.getName());
 

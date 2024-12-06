@@ -7,6 +7,9 @@ import org.springframework.security.core.Authentication;
 import springdev.scm.entities.Contact;
 import springdev.scm.forms.ContactForm;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface ContactService {
 
     Contact save(ContactForm contactForm, Authentication authentication);
@@ -19,8 +22,8 @@ public interface ContactService {
 
     List<Contact> searchByName(String name, String email, String phoneNumber);
 
-    List<Contact> getByUserId(String userId);
+    Page<Contact> getByUserId(String userId, Pageable pageable);
 
-    List<Contact> searchByUserAndKeyword(String userId, String keyword);
+    Page<Contact> searchByUserAndKeyword(String userId, String keyword, Pageable pageable);
 
 }

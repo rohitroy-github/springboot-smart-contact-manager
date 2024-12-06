@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ import springdev.scm.helper.ResourceNotFoundException;
 import springdev.scm.repositories.ContactRepo;
 import springdev.scm.services.ContactService;
 import springdev.scm.services.UserService;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -106,9 +110,9 @@ public class ContactServiceImpl implements ContactService {
     // }
 
     @Override
-    public List<Contact> getByUserId(String userId) {
+    public Page<Contact> getByUserId(String userId, Pageable pageable) {
 
-        return contactRepo.findByUserId(userId);
+        return contactRepo.findByUserId(userId, pageable);
 
     }
 
@@ -119,8 +123,8 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public List<Contact> searchByUserAndKeyword(String userId, String keyword) {
-        return contactRepo.findByUserIdAndKeyword(userId, keyword);
+    public Page<Contact> searchByUserAndKeyword(String userId, String keyword, Pageable pageable) {
+        return contactRepo.findByUserIdAndKeyword(userId, keyword, pageable);
     }
     
     

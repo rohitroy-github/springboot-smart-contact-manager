@@ -34,7 +34,7 @@
               />
               <button
                 type="submit"
-                class="w-1/4 px-4 py-2 bg-white text-gray-700 hover:bg-gray-200 transition rounded-md ml-2"
+                class="w-1/4 px-4 py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-200 transition rounded-md ml-2"
               >
                 Search
               </button>
@@ -78,58 +78,83 @@
                 </th>
               </tr>
             </thead>
-            <tbody id="contactsTable" th:each="contact : ${contacts}">
+            <tbody id="contactsTable" th:each="contact : ${contacts.content}">
               <tr class="border-b">
-                <td class="px-4 py-2">
+                <td class="px-3 py-2">
                   <img
                     th:src="${contact.picture != null ? contact.picture : 'https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg'}"
                     alt="Contact Image"
                     class="w-12 h-12 rounded-full"
                   />
                 </td>
-                <td class="px-4 py-2" th:text="${contact.name}">
+                <td class="px-3 py-2 text-base sm:text-sm font-bold" th:text="${contact.name}">
                   Contact Name
                 </td>
-                <td class="px-4 py-2" th:text="${contact.email}">
+                <td class="px-3 py-2 text-base sm:text-sm" th:text="${contact.email}">
                   Contact Email
                 </td>
-                <td class="px-4 py-2" th:text="${contact.phoneNumber}">
+                <td class="px-3 py-2 text-base sm:text-sm" th:text="${contact.phoneNumber}">
                   Contact Phone
                 </td>
-                <td class="px-4 py-2" th:text="${contact.address}">
+                <td class="px-3 py-2 text-base sm:text-sm" th:text="${contact.address}">
                   Contact Address
                 </td>
-                <td class="px-4 py-2">
+                <td class="px-3 py-2 text-base sm:text-sm">
                   <i
                     class="fas fa-star"
                     th:classappend="${contact.favourite ? 'text-yellow-500' : 'text-gray-400'}"
                   ></i>
                 </td>
-                <td class="px-4 py-2">
+                <td class="px-3 py-2 text-base sm:text-sm">
                   <a th:href="${contact.linkedInLink}" target="_blank">
                     <i class="fab fa-linkedin"></i>
                   </a>
                 </td>
-                <td class="px-4 py-2">
+                <td class="px-3 py-2 text-base sm:text-sm">
                   <a th:href="${contact.websiteLink}" target="_blank">
                     <i class="fas fa-globe"></i>
                   </a>
                 </td>
-                <td class="px-4 py-2">
+                <td class="px-3 py-2 text-base sm:text-sm text-center">
                   <a
                     th:href="@{'/user/contact/edit/' + ${contact.id}}"
-                    class="px-3 py-1 text-sm border border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition"
+                    class="w-1/2 px-4 py-2 text-sm border border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition text-center"
                     >Edit</a
                   >
                   <a
                     th:href="@{'/user/contact/delete/' + ${contact.id}}"
-                    class="px-3 py-1 text-sm border border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition ml-2"
+                    class="w-1/2 px-4 py-2 text-sm border border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition ml-2 text-center"
                     >Delete</a
                   >
                 </td>
               </tr>
             </tbody>
+            
+            
+            
           </table>
+
+          <div class="mt-4 flex justify-between items-center">
+            <!-- Previous Button -->
+            <a th:href="@{/user/contact/all-contacts(page=${currentPage - 1}, search=${search})}"
+               th:if="${currentPage > 0}"
+               class="px-4 py-2 text-sm border bg-white  border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition ml-2">
+              Previous
+            </a>
+          
+            <!-- Page Numbers -->
+            <div class="text-sm">
+              <span th:text="'Page ' + (${currentPage} + 1) + ' of ' + ${totalPages}"></span>
+            </div>
+          
+            <!-- Next Button -->
+            <a th:href="@{/user/contact/all-contacts(page=${currentPage + 1}, search=${search})}"
+               th:if="${currentPage + 1 < totalPages}"
+               class="px-4 py-2 text-sm border bg-white border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition ml-2">
+              Next
+            </a>
+          </div>
+          
         </div>
       </div>
     </section>
