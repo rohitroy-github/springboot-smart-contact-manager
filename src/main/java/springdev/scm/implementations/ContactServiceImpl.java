@@ -66,12 +66,13 @@ public class ContactServiceImpl implements ContactService {
 
         // newContact.setPicture("https://avatars.githubusercontent.com/u/68563695?v=4");
 
-        if (contactForm.getContactImage() == null || contactForm.getContactImage().isEmpty()) {
-            newContact.setPicture("https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg");
+        if (contactForm.getPicture() == null || contactForm.getPicture().isEmpty()) {
+            newContact.setPicture(
+                    "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg");
         } else {
-            newContact.setPicture(contactForm.getContactImage());
+            newContact.setPicture(contactForm.getPicture());
         }
-        
+
         logger.info("data : {}", newContact);
 
         return contactRepo.save(newContact);
@@ -115,7 +116,31 @@ public class ContactServiceImpl implements ContactService {
     public Page<Contact> searchByUserAndKeyword(String userId, String keyword, Pageable pageable) {
         return contactRepo.findByUserIdAndKeyword(userId, keyword, pageable);
     }
-    
-    
+
+    @Override
+    public Contact update(ContactForm contactForm, Authentication authentication) {
+        Contact existingContact = contactRepo.findById(contactForm.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Contact not found for update: " + contactForm.getId()));
+
+        // Ensure that the contact belongs to the logged-in user
+        String userEmail = Helper.getEmailOfLoggedInUser(authentication);
+        User loggedInUser = userService.getUserByEmail(userEmail);
+
+        if (!existingContact.getUser().getUserId().equals(loggedInUser.getUserId())) {
+            throw new IllegalArgumentException("You are not authorized to update this contact.");
+        }
+
+        existingContact.setName(contactForm.getName());
+        existingContact.setEmail(contactForm.getEmail());
+        existingContact.setPhoneNumber(contactForm.getPhoneNumber());
+        existingContact.setAddress(contactForm.getAddress());
+        existingContact.setDescription(contactForm.getDescription());
+        existingContact.setWebsiteLink(contactForm.getWebsiteLink());
+        existingContact.setLinkedInLink(contactForm.getLinkedInLink());
+        existingContact.setFavourite(contactForm.isFavourite());
+        existingContact.setPicture(contactForm.getPicture());
+
+        return contactRepo.save(existingContact);
+    }
 
 }

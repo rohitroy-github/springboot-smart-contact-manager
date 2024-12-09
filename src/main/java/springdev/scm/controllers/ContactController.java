@@ -42,23 +42,27 @@ public class ContactController {
     @Autowired
     private ContactService contactService;
 
+    // :> controller: add a new contact
     @RequestMapping(value = "add")
     public String addContactView(Model model) {
 
         ContactForm contactForm = new ContactForm();
         model.addAttribute("contactFormData", contactForm);
+        model.addAttribute("process_type", "add_new_contact");
+
 
         logger.info(":> showing add new contact page");
 
         return "user/add_contact";
     }
 
+    // :> controller: save a new contact
     @RequestMapping(value = "save-contact", method = RequestMethod.POST)
     public String processAddNewContact(@ModelAttribute ContactForm contactForm, Authentication authentication,
             BindingResult rBindingResult,
             HttpSession session) {
 
-        System.out.println(contactForm);
+        // System.out.println(contactForm);
 
         if (rBindingResult.hasErrors()) {
             session.setAttribute("message", "Please recheck the data entered.");
@@ -78,6 +82,7 @@ public class ContactController {
 
     }
 
+    // :> controller: view all contacts
     @RequestMapping(value = "all-contacts", method = RequestMethod.GET)
     public String viewContacts(
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -111,7 +116,8 @@ public class ContactController {
         return "user/all_contacts";
     }
 
-    @RequestMapping(value = "delete-contact/{id}", method = RequestMethod.GET)
+    // :> controller: delete the contact
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
     public String deleteContact(@PathVariable("id") String contactId, Authentication authentication,
             HttpSession session) {
         try {
@@ -132,7 +138,30 @@ public class ContactController {
         } catch (ResourceNotFoundException ex) {
             session.setAttribute("message", "Contact not found.");
         }
-        
+
+        return "redirect:/user/contact/all-contacts";
+    }
+
+    @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
+    public String editContactView(@PathVariable("id") String contactId, Model model, Authentication authentication) {
+        Contact contact = contactService.getById(contactId);
+
+        model.addAttribute("contactFormData", contact);
+        model.addAttribute("process_type", "update_contact");
+        model.addAttribute("contactId_to_be_updated", contactId);
+
+        return "user/add_contact";
+    }
+
+    @RequestMapping(value = "update-contact/{id}", method = RequestMethod.POST)
+    public String updateContact(@ModelAttribute ContactForm contactForm,  @PathVariable("id") String contactId, Authentication authentication, HttpSession session) {
+
+        logger.info("contact_id_fetched", contactId);
+
+        contactForm.setId(contactId);
+        contactService.update(contactForm, authentication);
+        session.setAttribute("message", "Contact updated successfully.");
+
         return "redirect:/user/contact/all-contacts";
     }
 

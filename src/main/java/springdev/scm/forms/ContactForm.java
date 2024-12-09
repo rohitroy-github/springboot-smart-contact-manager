@@ -17,6 +17,7 @@ import lombok.ToString;
 @ToString
 public class ContactForm {
 
+    private String id;
     private String name;
     private String email;
     private String phoneNumber;
@@ -25,7 +26,7 @@ public class ContactForm {
     private String websiteLink;
     private String linkedInLink;
     private boolean favourite;
-    private String contactImage;
+    private String picture;
     // private MultipartFile contactImage;
 
 }

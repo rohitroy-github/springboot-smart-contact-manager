@@ -24,4 +24,6 @@ public interface ContactService {
 
     Page<Contact> searchByUserAndKeyword(String userId, String keyword, Pageable pageable);
 
+    Contact update(ContactForm contactForm, Authentication authentication);
+
 }
