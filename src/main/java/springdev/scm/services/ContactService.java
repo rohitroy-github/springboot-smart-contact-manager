@@ -20,8 +20,6 @@ public interface ContactService {
 
     void delete(String id);
 
-    List<Contact> searchByName(String name, String email, String phoneNumber);
-
     Page<Contact> getByUserId(String userId, Pageable pageable);
 
     Page<Contact> searchByUserAndKeyword(String userId, String keyword, Pageable pageable);

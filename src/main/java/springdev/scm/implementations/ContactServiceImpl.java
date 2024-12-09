@@ -104,22 +104,11 @@ public class ContactServiceImpl implements ContactService {
 
     }
 
-    // @Override
-    // public List<Contact> search(String name, String email, String phoneNumber) {
-
-    // }
-
     @Override
     public Page<Contact> getByUserId(String userId, Pageable pageable) {
 
         return contactRepo.findByUserId(userId, pageable);
 
-    }
-
-    @Override
-    public List<Contact> searchByName(String name, String email, String phoneNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'searchByName'");
     }
 
     @Override
