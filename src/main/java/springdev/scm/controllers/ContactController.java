@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import springdev.scm.entities.Contact;
 import springdev.scm.entities.User;
 import springdev.scm.forms.ContactForm;
 import springdev.scm.helper.Helper;
+import springdev.scm.helper.ResourceNotFoundException;
 import springdev.scm.services.ContactService;
 import springdev.scm.services.UserService;
 
@@ -90,7 +92,6 @@ public class ContactController {
         Pageable pageable = PageRequest.of(page, size);
         Page<Contact> contacts;
 
-
         if (search != null && !search.isEmpty()) {
             // Search for contacts based on the query
             contacts = contactService.searchByUserAndKeyword(loggedInUser.getUserId(), search, pageable);
@@ -108,6 +109,31 @@ public class ContactController {
         logger.info(":> showing all contacts for user: {}", loggedInUser.getName());
 
         return "user/all_contacts";
+    }
+
+    @RequestMapping(value = "delete-contact/{id}", method = RequestMethod.GET)
+    public String deleteContact(@PathVariable("id") String contactId, Authentication authentication,
+            HttpSession session) {
+        try {
+            String userEmail = Helper.getEmailOfLoggedInUser(authentication);
+            User loggedInUser = userService.getUserByEmail(userEmail);
+
+            // Fetch the contact to be deleted
+            Contact contact = contactService.getById(contactId);
+
+            // Ensure that the logged-in user owns this contact
+            if (!contact.getUser().getUserId().equals(loggedInUser.getUserId())) {
+                session.setAttribute("message", "You do not have permission to delete this contact.");
+                return "redirect:/user/contact/all-contacts";
+            }
+
+            contactService.delete(contactId);
+            session.setAttribute("message", "Contact deleted successfully.");
+        } catch (ResourceNotFoundException ex) {
+            session.setAttribute("message", "Contact not found.");
+        }
+        
+        return "redirect:/user/contact/all-contacts";
     }
 
 }
