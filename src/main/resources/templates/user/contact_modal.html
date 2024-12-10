@@ -1,0 +1,98 @@
+<div th:fragment="modal">
+  <div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white w-11/12 max-w-lg rounded-lg shadow-lg p-6 font-montserrat">
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-lg font-bold text-gray-900">Contact Details</h3>
+        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="closeModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Modal Content -->
+      <div id="modalContent" class="mt-4 text-gray-700 text-sm">
+        <div class="flex flex-col items-center mb-4">
+          <!-- Profile Picture -->
+          <img id="contactModalImage" class="w-24 h-24 rounded-full border-2 border-gray-300" 
+               src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" 
+               alt="Profile Picture">
+        </div>
+        <div class="space-y-2">
+          <!-- Contact Details -->
+          <p id="contactModalName" class="text-center font-bold text-lg">No Name</p>
+          <p id="contactModalEmail" class="text-center text-sm text-gray-600">Email: N/A</p>
+          <p id="contactModalPhone" class="text-center text-sm text-gray-600">Phone: N/A</p>
+          <p id="contactModalAddress" class="text-center text-sm text-gray-600">Address: N/A</p>
+          <p id="contactModalFavourite" class="text-center text-sm text-gray-600">Favourite: No</p>
+          <p id="contactModalLinkedIn" class="text-center text-sm text-blue-600 hover:underline cursor-pointer">
+            LinkedIn: N/A
+          </p>
+          <p id="contactModalWebsite" class="text-center text-sm text-blue-600 hover:underline cursor-pointer">
+            Website: N/A
+          </p>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="mt-6 flex justify-end">
+        <button class="px-4 py-2 bg-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-400 mr-2" 
+                onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function fetchContactDetails(contactId) {
+      try {
+        const response = await fetch(`/api/contacts/${contactId}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const contact = await response.json();
+        updateModalContent(contact);
+        openModal(); // Open the modal after fetching the data
+      } catch (error) {
+        console.error("Failed to fetch contact details:", error);
+      }
+    }
+
+    function updateModalContent(contact) {
+      if (!contact) {
+        console.error("Contact data is null or undefined");
+        return;
+      }
+
+      // Update the modal content with contact details
+      document.getElementById("contactModalName").textContent = contact.name || "No Name";
+      document.getElementById("contactModalEmail").textContent = `Email: ${contact.email || "N/A"}`;
+      document.getElementById("contactModalPhone").textContent = `Phone: ${contact.phoneNumber || "N/A"}`;
+      document.getElementById("contactModalAddress").textContent = `Address: ${contact.address || "N/A"}`;
+      document.getElementById("contactModalFavourite").textContent = `Favourite: ${contact.favourite ? "Yes" : "No"}`;
+      document.getElementById("contactModalLinkedIn").textContent = contact.linkedInLink || "N/A";
+      document.getElementById("contactModalWebsite").textContent = contact.websiteLink || "N/A";
+
+      // Set LinkedIn and Website links if they exist
+      const linkedInElement = document.getElementById("contactModalLinkedIn");
+      linkedInElement.textContent = contact.linkedInLink || "N/A";
+      linkedInElement.href = contact.linkedInLink || "#";
+
+      const websiteElement = document.getElementById("contactModalWebsite");
+      websiteElement.textContent = contact.websiteLink || "N/A";
+      websiteElement.href = contact.websiteLink || "#";
+
+      // Profile Picture
+      const profileImage = document.getElementById("contactModalImage");
+      profileImage.src = contact.picture || 
+        "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
+      profileImage.alt = `${contact.name || "Contact"}'s Profile Picture`;
+    }
+
+    function openModal() {
+      document.getElementById('modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+    }
+  </script>
+</div>

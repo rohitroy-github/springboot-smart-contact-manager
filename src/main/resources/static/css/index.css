@@ -2,8 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* :> font-montserrat directory for global fonts */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* :> font-awesoeme library for icons */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css');
 
   
