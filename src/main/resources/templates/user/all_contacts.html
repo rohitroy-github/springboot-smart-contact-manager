@@ -71,12 +71,13 @@
               <th class="px-4 py-2 text-left text-gray-700 font-medium">
                 Website
               </th>
-              <th class="px-4 py-2 text-left text-gray-700 font-medium">View</th>
 
 
-              <th class="px-4 py-2 text-left text-gray-700 font-medium">
+              <th class="px-4 py-2 text-gray-700 font-medium text-center">
                 Actions
               </th>
+
+
             </tr>
           </thead>
           <tbody id="contactsTable" th:each="contact : ${contacts.content}">
@@ -95,9 +96,11 @@
               <td class="px-3 py-2 text-base sm:text-sm" th:text="${contact.phoneNumber}">
                 Contact Phone
               </td>
-              <td class="px-3 py-2 text-base sm:text-sm" th:text="${contact.address}">
+              <td class="px-3 py-2 text-base sm:text-sm"
+                th:text="${#strings.length(contact.address) > 20 ? #strings.substring(contact.address, 0, 20) + '...' : contact.address}">
                 Contact Address
               </td>
+
               <td class="px-3 py-2 text-base sm:text-sm text-center">
                 <i th:classappend="${contact.favourite ? 'fas fa-star text-base' : ''}"></i>
               </td>
@@ -113,27 +116,30 @@
                 </a>
               </td>
 
-              <td class="px-3 py-2 text-base sm:text-sm text-center">
-                <button
-                    th:onclick="fetchContactDetails([[${contact.id}]])"
-                    class="focus:outline-none"
-                >
-                    <i class="fas fa-eye text-base"></i>
 
+
+
+
+
+              <td class="px-3 py-2 sm:text-sm text-center">
+                <a th:href="@{'/user/contact/edit/' + ${contact.id}}" 
+                   class="focus:outline-none p-4 text-sm text-gray-800 rounded-md hover:bg-gray-200 transition ml-2 text-center">
+                  <i class="fas fa-edit text-lg"></i>
+                </a>
+                
+                <a th:href="@{'/user/contact/delete/' + ${contact.id}}" 
+                class="focus:outline-none p-4 text-sm text-gray-800 rounded-md hover:bg-gray-200 transition ml-2 text-center">
+                <i class="fas fa-trash-alt text-lg"></i>
+                </a>
+              
+                <button th:onclick="fetchContactDetails([[${contact.id}]])" 
+                class="focus:outline-none p-4 text-sm text-gray-800 rounded-md hover:bg-gray-200 transition ml-2 text-center">
+                <i class="fas fa-eye text-lg"></i>
                 </button>
-            </td>
-            
+              </td>
               
 
 
-
-
-              <td class="px-3 py-2 text-base sm:text-sm text-center">
-                <a th:href="@{'/user/contact/edit/' + ${contact.id}}"
-                  class="w-1/2 px-4 py-2 text-sm border border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition text-center">Edit</a>
-                <a th:href="@{'/user/contact/delete/' + ${contact.id}}"
-                  class="w-1/2 px-4 py-2 text-sm border border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition ml-2 text-center">Delete</a>
-              </td>
             </tr>
           </tbody>
 
