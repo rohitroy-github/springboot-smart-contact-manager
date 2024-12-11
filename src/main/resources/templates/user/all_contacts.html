@@ -8,11 +8,10 @@
 
   <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
   <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
-
 </head>
 
-<body class="font-montserrat bg-gray-100">
-  <section id="content" class="flex flex-col items-center min-h-screen p-8">
+<body>
+  <section id="content" class="flex flex-col items-center min-h-screen p-8 font-montserrat">
     <div class="max-w-7xl w-full text-center">
       <h2 class="text-3xl font-bold text-gray-900 mb-3">Your Contacts</h2>
       <p class="text-gray-700 mb-3 text-sm">
@@ -72,16 +71,25 @@
                 Website
               </th>
 
-
               <th class="px-4 py-2 text-gray-700 font-medium text-center">
                 Actions
               </th>
-
-
             </tr>
           </thead>
-          <tbody id="contactsTable" th:each="contact : ${contacts.content}">
-            <tr class="border-b">
+          <tbody>
+            <!-- Check if the contacts list is empty -->
+            <tr th:if="${#lists.isEmpty(contacts.content)}">
+              <td colspan="9" class="px-3 py-4 text-center text-gray-700 bg-gray-200">
+                <p class="text-sm mb-3">No contacts saved. Start by adding a new contact.</p>
+                <a href="/user/contact/add"
+                  class="px-4 py-2 text-sm border bg-white border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition">
+                  Add New Contact
+                </a>
+              </td>
+            </tr>
+
+            <!-- Render contacts if the list is not empty -->
+            <tr th:each="contact : ${contacts.content}" class="border-b">
               <td class="px-3 py-2">
                 <img
                   th:src="${contact.picture != null ? contact.picture : 'https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg'}"
@@ -100,14 +108,12 @@
                 th:text="${#strings.length(contact.address) > 20 ? #strings.substring(contact.address, 0, 20) + '...' : contact.address}">
                 Contact Address
               </td>
-
               <td class="px-3 py-2 text-base sm:text-sm text-center">
                 <i th:classappend="${contact.favourite ? 'fas fa-star text-base' : ''}"></i>
               </td>
               <td class="px-3 py-2 text-base sm:text-sm text-center">
                 <a th:href="${contact.linkedInLink}" target="_blank">
-                  <i class="fab fa-linkedin text-base">
-                  </i>
+                  <i class="fab fa-linkedin text-base"></i>
                 </a>
               </td>
               <td class="px-3 py-2 text-base sm:text-sm text-center">
@@ -115,31 +121,20 @@
                   <i class="fas fa-globe text-base"></i>
                 </a>
               </td>
-
-
-
-
-
-
               <td class="px-3 py-2 sm:text-sm text-center">
-                <a th:href="@{'/user/contact/edit/' + ${contact.id}}" 
-                   class="focus:outline-none p-4 text-sm text-gray-800 rounded-md hover:bg-gray-200 transition ml-2 text-center">
+                <a th:href="@{'/user/contact/edit/' + ${contact.id}}"
+                  class="focus:outline-none p-4 text-sm text-gray-800 rounded-md hover:bg-gray-200 transition ml-2 text-center">
                   <i class="fas fa-edit text-lg"></i>
                 </a>
-                
-                <a th:href="@{'/user/contact/delete/' + ${contact.id}}" 
-                class="focus:outline-none p-4 text-sm text-gray-800 rounded-md hover:bg-gray-200 transition ml-2 text-center">
-                <i class="fas fa-trash-alt text-lg"></i>
+                <a th:href="@{'/user/contact/delete/' + ${contact.id}}"
+                  class="focus:outline-none p-4 text-sm text-gray-800 rounded-md hover:bg-gray-200 transition ml-2 text-center">
+                  <i class="fas fa-trash-alt text-lg"></i>
                 </a>
-              
-                <button th:onclick="fetchContactDetails([[${contact.id}]])" 
-                class="focus:outline-none p-4 text-sm text-gray-800 rounded-md hover:bg-gray-200 transition ml-2 text-center">
-                <i class="fas fa-eye text-lg"></i>
+                <button th:onclick="fetchContactDetails([[${contact.id}]])"
+                  class="focus:outline-none p-4 text-sm text-gray-800 rounded-md hover:bg-gray-200 transition ml-2 text-center">
+                  <i class="fas fa-eye text-lg"></i>
                 </button>
               </td>
-              
-
-
             </tr>
           </tbody>
 
@@ -151,7 +146,7 @@
           <!-- Previous Button -->
           <a th:href="@{/user/contact/all-contacts(page=${currentPage - 1}, search=${search})}"
             th:if="${currentPage > 0}"
-            class="px-4 py-2 text-sm border bg-white  border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition ml-2">
+            class="px-4 py-2 text-sm border bg-white border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition ml-2">
             Previous
           </a>
 
@@ -167,7 +162,6 @@
             Next
           </a>
         </div>
-
       </div>
     </div>
 
