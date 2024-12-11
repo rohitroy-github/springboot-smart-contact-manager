@@ -132,36 +132,29 @@ public class UserServiceImpl implements UserService {
         return userRepo.findById(userId);
     }
 
-    @Override
-    public Optional<User> updateUser(User user) {
+    public User updateUser(UserForm userForm) throws Exception {
+        // Retrieve the user by ID
+        Optional<User> optionalUser = userRepo.findById(userForm.getId());
 
-        User fetchedUser = userRepo.findById(user.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
+        if (optionalUser.isPresent()) {
+            // Get the existing user entity
+            User existingUser = optionalUser.get();
 
-        // Update fields
-        fetchedUser.setName(user.getName());
-        fetchedUser.setEmail(user.getEmail());
-        fetchedUser.setPassword(user.getPassword());
-        fetchedUser.setAbout(user.getAbout());
-        fetchedUser.setProfilePicture(user.getProfilePicture());
-        fetchedUser.setPhoneNumber(user.getPhoneNumber());
-        fetchedUser.setEnabled(user.isEnabled());
-        fetchedUser.setEmailVerified(user.isEmailVerified());
-        fetchedUser.setPhoneNumberVerified(user.isPhoneNumberVerified());
-        fetchedUser.setProvider(user.getProvider());
-        fetchedUser.setProviderUserId(user.getProviderUserId());
+            // Update the fields based on the input form
+            existingUser.setName(userForm.getName());
+            existingUser.setEmail(userForm.getEmail());
+            existingUser.setPhoneNumber(userForm.getPhoneNumber());
+            existingUser.setAbout(userForm.getAbout());
+            existingUser.setProfilePicture(userForm.getProfilePicture());
 
-        // Optionally, update contacts list if necessary
-        if (user.getContacts() != null) {
-            fetchedUser.getContacts().clear();
-            fetchedUser.getContacts().addAll(user.getContacts());
+            // Save the updated user to the database
+            return userRepo.save(existingUser);
+        } else {
+            // If the user is not found, throw an exception
+            throw new Exception("User not found with ID: " + userForm.getId());
         }
-
-        // Save updated user to the database
-        User updatedUser = userRepo.save(fetchedUser);
-        return Optional.of(updatedUser);
     }
-
+    
     @Override
     public void deleteUser(String userId) {
 

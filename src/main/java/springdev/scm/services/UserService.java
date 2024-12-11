@@ -19,7 +19,7 @@ public interface UserService {
 
     Optional<User> getUserById(String userId);
 
-    Optional<User> updateUser(User user);
+    User updateUser(UserForm userForm) throws Exception;
 
     void deleteUser(String userId);
 
