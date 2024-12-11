@@ -11,29 +11,43 @@
 
 <body class="bg-gray-100 font-montserrat">
   <section id="content" class="flex justify-center items-center min-h-screen p-6 w-full">
-    <!-- Main Content Section -->
-    <div class="flex justify-between w-full max-w-6xl">
-      <!-- Centered Welcome Text -->
-      <div class="flex items-center justify-center w-full">
-        <div class="text-center flex flex-col">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">User Profile</h2>
-          <p class="text-gray-700">
-            Welcome to your profile, <span class="font-semibold text-gray-800" th:text="${loggedInUser.name}">User Name</span>.
-          </p>
+    <div class="rounded-lg shadow-lg w-full max-w-4xl p-6">
+      <!-- Profile Header -->
+      <div class="flex flex-col items-center mb-6">
+        <!-- Profile Picture -->
+        <div class="w-40 h-40 rounded-full overflow-hidden border-4 border-gray-300">
+          <img
+            th:src="${loggedInUser.profilePicture != null ? loggedInUser.profilePicture : 'https://www.pngarts.com/files/10/Default-Profile-Picture-Download-PNG-Image.png'}"
+            alt="Profile Picture"
+            class="w-full h-full object-cover">
         </div>
+        <h2 class="text-2xl font-bold text-gray-900 mt-4" th:text="${loggedInUser.name}">User Name</h2>
       </div>
 
-      <!-- Right Aligned Details Column -->
-      <div class="w-[40%] text-left text-gray-800 space-y-4">
+      <!-- About Section -->
+      <div class="mb-6 text-center">
+        <h3 class="text-lg font-semibold text-gray-800">About</h3>
+        <p class="text-gray-700 mt-2" th:text="${loggedInUser.about}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vel libero a libero ultricies interdum.</p>
+      </div>
+
+      <!-- Profile Details -->
+      <div class="grid grid-cols-1 gap-4">
         <p><strong>User ID:</strong> <span th:text="${loggedInUser.userId}">12345</span></p>
         <p><strong>Email:</strong> <span th:text="${loggedInUser.email}">user@example.com</span></p>
-        <p><strong>About:</strong> <span th:text="${loggedInUser.about}">Lorem ipsum dolor sit amet.</span></p>
         <p><strong>Phone Number:</strong> <span th:text="${loggedInUser.phoneNumber}">123-456-7890</span></p>
         <p><strong>Email Verified:</strong> <span th:text="${loggedInUser.emailVerified} ? 'Yes' : 'No'">No</span></p>
-        <p><strong>Phone Number Verified:</strong> <span th:text="${loggedInUser.phoneNumberVerified} ? 'Yes' : 'No'">No</span></p>
+        <p><strong>Phone Verified:</strong> <span th:text="${loggedInUser.phoneNumberVerified} ? 'Yes' : 'No'">No</span></p>
         <p><strong>Provider:</strong> <span th:text="${loggedInUser.provider}">SELF</span></p>
         <p><strong>Provider User ID:</strong> <span th:text="${loggedInUser.providerUserId}">Provider123</span></p>
         <p><strong>Roles:</strong> <span th:text="${loggedInUser.roleList}">[ADMIN, USER]</span></p>
+      </div>
+
+      <!-- Optional Footer Section -->
+      <div class="mt-6 text-center">
+        <button type="submit"
+          class="w-1/4 px-4 py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-200 transition rounded-md ml-2">
+          Edit Profile
+        </button>
       </div>
     </div>
   </section>
