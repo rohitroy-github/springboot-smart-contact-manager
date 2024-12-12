@@ -45,7 +45,7 @@ public class UesrController {
         return "user/profile";
     }
 
-    @GetMapping("profile/edit/{userId}")
+    @RequestMapping(value = "profile/edit/{userId}", method = RequestMethod.GET)
     public String editUserProfile(@PathVariable("userId") String userId, Model model, Authentication authentication) {
         try {
             User user = userService.getUserById(userId)
@@ -60,7 +60,7 @@ public class UesrController {
         return "user/edit_profile";
     }
 
-    @RequestMapping(value = "/profile/edit/{userId}", method = RequestMethod.POST)
+    @RequestMapping(value = "profile/edit/{userId}", method = RequestMethod.POST)
     public String updateUserProfile(
             @PathVariable("userId") String userId,
             @ModelAttribute("userForm") UserForm userForm,
