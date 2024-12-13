@@ -23,6 +23,25 @@
             >User Name</span
           >. Manage and track your contacts efficiently.
         </p>
+
+        <!-- Contacts Section -->
+        <div>
+          <!-- If the user has saved contacts -->
+          <p th:if="${loggedInUser.contacts != null && !loggedInUser.contacts.isEmpty()}" class="text-gray-700 font-semibold">
+            You have 
+            <span th:text="${loggedInUser.contacts.size()}">0</span>
+            saved contacts
+          </p>
+
+          <!-- If no contacts are saved -->
+          <div th:if="${loggedInUser.contacts == null || loggedInUser.contacts.isEmpty()}">
+            <p class="text-sm mb-3">No contacts saved. Start by adding a new contact.</p>
+            <a href="/user/contact/add"
+              class="px-4 py-2 text-sm border bg-white border-gray-300 text-gray-800 rounded-md hover:bg-gray-200 transition">
+              Add New Contact
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   </body>

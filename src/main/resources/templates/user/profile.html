@@ -20,7 +20,7 @@
 
       <!-- message dialogue box -->
       <div class="flex space-x-4 items-center justify-center mb-3">
-        <div class="w-1/3 text-center text-xs">
+        <div class="min-w-1/3 text-center text-xs">
           <div th:replace="~{message::messagebox}"></div>
         </div>
       </div>
@@ -65,23 +65,27 @@
         <p>
           <strong>Email Verified:</strong>
           <span th:text="${loggedInUser.emailVerified} ? 'Yes' : 'No'">No</span>
-          <button th:if="${!loggedInUser.emailVerified}" data-user-id="${loggedInUser.userId}"
+          <a th:if="${!loggedInUser.emailVerified}"
+            th:href="@{/user/verify/email/{userId}(userId=${loggedInUser.userId})}"
             class="ml-2 px-2 py-1 text-sm bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
             Verify
-          </button>
+          </a>
           <i th:if="${loggedInUser.emailVerified}"
-            class="fas fa-check text-black border-2 border-black rounded-md p-2 text-xs ml-1"></i>
+            class="fas fa-check text-black border-2 border-black rounded-full p-2 text-xs ml-1"></i>
         </p>
+
         <p>
           <strong>Phone Verified:</strong>
           <span th:text="${loggedInUser.phoneNumberVerified} ? 'Yes' : 'No'">No</span>
-          <button th:if="${!loggedInUser.phoneNumberVerified}" data-user-id="${loggedInUser.userId}"
+          <a th:if="${!loggedInUser.phoneNumberVerified}"
+            th:href="@{/user/verify/phone/{userId}(userId=${loggedInUser.userId})}"
             class="ml-2 px-2 py-1 text-sm bg-gray-900 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
             Verify
-          </button>
+          </a>
           <i th:if="${loggedInUser.phoneNumberVerified}"
-            class="fas fa-check text-black border-2 border-black rounded-md p-2 text-xs ml-1"></i>
+            class="fas fa-check text-black border-2 border-black rounded-full p-2 text-xs ml-1"></i>
         </p>
+
 
 
 
@@ -90,13 +94,17 @@
           <strong>Provider:</strong>
           <span th:text="${loggedInUser.provider}">SELF</span>
         </p>
-        <p>
+
+        <p th:if="${loggedInUser.providerUserId}">
           <strong>Provider User ID:</strong>
           <span th:text="${loggedInUser.providerUserId}">Provider123</span>
         </p>
+
+
+
         <p>
           <strong>Roles:</strong>
-          <span th:text="${loggedInUser.roleList}">[ADMIN, USER]</span>
+          <span th:text="${loggedInUser.roleList}">[USER]</span>
         </p>
       </div>
     </div>

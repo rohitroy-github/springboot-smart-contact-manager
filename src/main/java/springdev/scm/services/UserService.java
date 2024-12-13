@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import springdev.scm.entities.User;
 import springdev.scm.forms.UserForm;
 
-
 public interface UserService {
 
     User saveUser(User user);
@@ -30,4 +29,9 @@ public interface UserService {
     List<User> getAllUsers();
 
     User getUserByEmail(String userEmail);
+
+    boolean verifyEmail(String userId);
+
+    boolean verifyPhone(String userId);
+
 }

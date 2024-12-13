@@ -36,7 +36,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 // public class User {
 public class User implements UserDetails {
 
-    @Id                                                                                                                                                                                                                                                                                                      
+    @Id
     @Column(name = "user_id", nullable = false, unique = true)
     private String userId;
 
@@ -61,7 +61,7 @@ public class User implements UserDetails {
 
     @Getter(value = AccessLevel.NONE)
     @Column(name = "enabled", nullable = true)
-    private boolean enabled = true; 
+    private boolean enabled = true;
 
     @Column(name = "email_verified", nullable = true)
     private boolean emailVerified = false;
@@ -77,7 +77,7 @@ public class User implements UserDetails {
     @Column(name = "provider_user_id")
     private String providerUserId;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Contact> contacts = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -85,7 +85,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<SimpleGrantedAuthority> roles =  roleList.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
+        Collection<SimpleGrantedAuthority> roles = roleList.stream().map(role -> new SimpleGrantedAuthority(role))
+                .collect(Collectors.toList());
 
         return roles;
     }
@@ -111,7 +112,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean isEnabled() { 
+    public boolean isEnabled() {
         return this.enabled;
     }
 

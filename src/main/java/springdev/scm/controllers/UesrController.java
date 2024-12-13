@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import jakarta.servlet.http.HttpSession;
 import springdev.scm.entities.User;
 import springdev.scm.forms.UserForm;
-import springdev.scm.helper.Helper;
 import springdev.scm.helper.ResourceNotFoundException;
 import springdev.scm.services.UserService;
 
@@ -88,5 +86,43 @@ public class UesrController {
             return "user/edit-profile";
         }
     }
+
+    @RequestMapping(value = "/verify/email/{userId}", method = RequestMethod.GET)
+    public String verifyEmail(@PathVariable("userId") String userId, HttpSession session) {
+        try {
+            boolean success = userService.verifyEmail(userId);
+
+            if (success) {
+                session.setAttribute("message", "Email verified successfully.");
+            } else {
+                session.setAttribute("message", "Failed to verify email.");
+            }
+        } catch (Exception e) {
+            logger.error("Error verifying email: " + e.getMessage(), e);
+            session.setAttribute("message", "An error occurred while verifying email.");
+        }
+
+        return "redirect:/user/profile";
+    }
+
+    @RequestMapping(value = "/verify/phone/{userId}", method = RequestMethod.GET)
+    public String verifyPhone(@PathVariable("userId") String userId, HttpSession session) {
+        try {
+            boolean success = userService.verifyPhone(userId);
+
+            if (success) {
+                session.setAttribute("message", "Phone number verified successfully.");
+            } else {
+                session.setAttribute("message", "Failed to verify phone number.");
+            }
+        } catch (Exception e) {
+            logger.error("Error verifying phone number: " + e.getMessage(), e);
+            session.setAttribute("message", "An error occurred while verifying phone number.");
+        }
+
+        return "redirect:/user/profile";
+    }
+
+    
 
 }

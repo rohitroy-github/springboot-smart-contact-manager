@@ -192,4 +192,33 @@ public class UserServiceImpl implements UserService {
         return userRepo.findByEmail(userEmail).orElse(null);
     }
 
+    @Override
+public boolean verifyEmail(String userId) {
+    Optional<User> optionalUser = userRepo.findById(userId);
+
+    if (optionalUser.isPresent()) {
+        User user = optionalUser.get();
+        user.setEmailVerified(true); // Set emailVerified to true
+        userRepo.save(user);        // Save the updated user
+        return true;
+    }
+
+    return false; // Return false if user not found
+}
+
+@Override
+public boolean verifyPhone(String userId) {
+    Optional<User> optionalUser = userRepo.findById(userId);
+
+    if (optionalUser.isPresent()) {
+        User user = optionalUser.get();
+        user.setPhoneNumberVerified(true); // Set phoneVerified to true
+        userRepo.save(user);         // Save the updated user
+        return true;
+    }
+
+    return false; // Return false if user not found
+}
+
+
 }

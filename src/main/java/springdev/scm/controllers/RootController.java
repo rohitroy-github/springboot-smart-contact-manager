@@ -35,8 +35,15 @@ public class RootController {
 
         model.addAttribute("loggedInUser", loggedInUserData);
 
-        logger.info(":> [{}] > user_logged_in", loggedInUserEmail);
+        // logger.info(":> [{}] > user_logged_in", loggedInUserEmail);
+
+        // Fetch and add the count of contacts
+        int numberOfContacts = loggedInUserData.getContacts() != null ? loggedInUserData.getContacts().size() : 0;
+        model.addAttribute("numberOfContacts", numberOfContacts);
+
+        logger.info(":> [{}] > user_logged_in with [{}] contact(s)", loggedInUserEmail, numberOfContacts);
 
     }
 
 }
+
