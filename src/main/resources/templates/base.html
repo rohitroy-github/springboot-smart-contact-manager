@@ -1,44 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" th:fragment="parent(content, title)" xmlns:th="http://www.thymeleaf.org">
+<html
+  lang="en"
+  th:fragment="parent(content, title)"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:replace="${title}">SCM</title>
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link rel="stylesheet" th:href="@{/css/index.css}" />
+  </head>
 
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title th:text="${title}">Smart Contact Manager</title>
-  <link rel="stylesheet" th:href="@{/css/output.css}" />
-  <link rel="stylesheet" th:href="@{/css/index.css}" />
-</head>
-
-<body class="bg-gray-200 font-montserrat">
-  <div class="flex flex-col min-h-screen">
-    <!-- Navbar -->
-    <div th:if="${loggedInUser}">
-      <div data-th-replace="~{user/navbar::logged_in_user_navbar}"></div>
-    </div>
-
-    <div th:unless="${loggedInUser}">
-      <div data-th-replace="~{navbar :: navbar}"></div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="flex w-full">
-      <!-- Sidebar -->
-      <div class=" w-1/6" th:if="${loggedInUser}">
-        <div th:replace="~{user/sidebar :: sidebar}"></div>
+  <body class="bg-gray-200 font-montserrat">
+    <div class="flex flex-col min-h-screen">
+      <!-- Navbar -->
+      <div th:if="${loggedInUser}">
+        <div data-th-replace="~{user/navbar::logged_in_user_navbar}"></div>
       </div>
 
-      <!-- Content Area -->
-      <div class="flex-grow">
-        <div th:replace="${content}"></div>
+      <div th:unless="${loggedInUser}">
+        <div data-th-replace="~{navbar :: navbar}"></div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex w-full">
+        <!-- Sidebar -->
+        <div class="w-1/6" th:if="${loggedInUser}">
+          <div th:replace="~{user/sidebar :: sidebar}"></div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="flex-grow">
+          <div th:replace="${content}"></div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div>
+        <div th:replace="~{footer :: footer}"></div>
       </div>
     </div>
-
-    <!-- Footer -->
-    <div>
-      <div th:replace="~{footer :: footer}"></div>
-    </div>
-  </div>
-</body>
-
+  </body>
 </html>
