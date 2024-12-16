@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import springdev.scm.entities.Contact;
 import springdev.scm.services.ContactService;
 
+// :> fetching values from application.properties
 import org.springframework.beans.factory.annotation.Value;
 
 @RestController
@@ -24,8 +25,6 @@ public class ApiController {
 
     @Autowired
     private ContactService contactService;
-
-    // private static final String API_KEY = "131bfbc7-f12b-43e2-b42c-b9c7e1653247";
 
     @Value("${api.key}")
     private String API_KEY;
@@ -43,10 +42,10 @@ public class ApiController {
         return contactService.getById(contactId);
 
     }
-
-    // API endpoint to fetch all the contacts of any user based on the user-id
-    // /api/contacts?userId=<userId>&apiKey=<your-unique-api-key>
-    // [testing] > http://localhost:8081/api/contacts?userId=7c2c4824-5f59-4bee-85d3-9ffbea76f3d0&apiKey=131bfbc7-f12b-43e2-b42c-b9c7e1653247
+    
+    // :> API endpoint to fetch all the contacts of any user based on the user-id
+    // :> endpoint > /api/contacts?userId=<userId>&apiKey=<your-unique-api-key>
+    // :> [testing] > http://localhost:8081/api/contacts?userId=7c2c4824-5f59-4bee-85d3-9ffbea76f3d0&apiKey=131bfbc7-f12b-43e2-b42c-b9c7e1653247
     @GetMapping("/contacts")
     public ResponseEntity<?> getUserContacts(
             @RequestParam("userId") String userId,
