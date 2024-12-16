@@ -24,6 +24,14 @@
 
 ---
 
+## Snapshots
+
+| ![Snapshot 1](https://github.com/user-attachments/assets/7027107d-c867-4d10-8039-a1a367366666) | ![Snapshot 2](https://github.com/user-attachments/assets/d3bf2f29-575b-43a8-bc08-dc196c87c247) |
+|--------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| ![Snapshot 3](https://github.com/user-attachments/assets/0100794e-45bd-42f4-96a6-d232fa9d5fcd) | ![Snapshot 4](https://github.com/user-attachments/assets/c30cc102-10b2-430f-aec8-462bbbc7a270) |
+
+---
+
 ## Getting Started
 
 ### Prerequisites
