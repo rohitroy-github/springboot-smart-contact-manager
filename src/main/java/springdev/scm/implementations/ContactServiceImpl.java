@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -120,7 +119,8 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public Contact update(ContactForm contactForm, Authentication authentication) {
         Contact existingContact = contactRepo.findById(contactForm.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Contact not found for update: " + contactForm.getId()));
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Contact not found for update: " + contactForm.getId()));
 
         // Ensure that the contact belongs to the logged-in user
         String userEmail = Helper.getEmailOfLoggedInUser(authentication);
@@ -141,6 +141,12 @@ public class ContactServiceImpl implements ContactService {
         existingContact.setPicture(contactForm.getPicture());
 
         return contactRepo.save(existingContact);
+    }
+
+    @Override
+    public List<Contact> getUserContactsAPI(String userId, String apiKey) {
+
+        return contactRepo.findByUserId(userId, null).getContent();
     }
 
 }

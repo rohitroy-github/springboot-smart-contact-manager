@@ -26,4 +26,6 @@ public interface ContactService {
 
     Contact update(ContactForm contactForm, Authentication authentication);
 
+    List<Contact> getUserContactsAPI(String userId, String apiKey);
+
 }
