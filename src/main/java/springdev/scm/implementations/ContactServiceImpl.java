@@ -81,55 +81,33 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public List<Contact> getAll() {
-
-        return contactRepo.findAll();
-
-    }
-
-    @Override
-    public Contact getById(String id) {
-
-        return contactRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Can't fetch contact with ID:" + id));
-
-    }
-
-    @Override
-    public void delete(String id) {
-
-        Contact contactToBeDeleted = contactRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Can't fetch contact with ID:" + id));
-        contactRepo.delete(contactToBeDeleted);
-
-    }
-
-    @Override
-    public Page<Contact> getByUserId(String userId, Pageable pageable) {
-
-        return contactRepo.findByUserId(userId, pageable);
-
-    }
-
-    @Override
-    public Page<Contact> searchByUserAndKeyword(String userId, String keyword, Pageable pageable) {
-        return contactRepo.findByUserIdAndKeyword(userId, keyword, pageable);
-    }
-
-    @Override
     public Contact update(ContactForm contactForm, Authentication authentication) {
+        // Fetch existing contact or throw an exception if not found
         Contact existingContact = contactRepo.findById(contactForm.getId())
                 .orElseThrow(
                         () -> new ResourceNotFoundException("Contact not found for update: " + contactForm.getId()));
 
-        // Ensure that the contact belongs to the logged-in user
+        // Validate that the logged-in user owns the contact
         String userEmail = Helper.getEmailOfLoggedInUser(authentication);
         User loggedInUser = userService.getUserByEmail(userEmail);
-
         if (!existingContact.getUser().getUserId().equals(loggedInUser.getUserId())) {
             throw new IllegalArgumentException("You are not authorized to update this contact.");
         }
 
+        // Update contact fields using setters
+        updateContactFields(existingContact, contactForm);
+
+        // Save and return the updated contact
+        return contactRepo.save(existingContact);
+    }
+
+    /**
+     * Helper method to update the fields of a contact from a ContactForm.
+     *
+     * @param existingContact The contact to be updated.
+     * @param contactForm     The form containing updated contact data.
+     */
+    private void updateContactFields(Contact existingContact, ContactForm contactForm) {
         existingContact.setName(contactForm.getName());
         existingContact.setEmail(contactForm.getEmail());
         existingContact.setPhoneNumber(contactForm.getPhoneNumber());
@@ -139,13 +117,78 @@ public class ContactServiceImpl implements ContactService {
         existingContact.setLinkedInLink(contactForm.getLinkedInLink());
         existingContact.setFavourite(contactForm.isFavourite());
         existingContact.setPicture(contactForm.getPicture());
-
-        return contactRepo.save(existingContact);
     }
 
+    /**
+     * Retrieves a list of all contacts.
+     * 
+     * @return A list of all contacts.
+     */
+    @Override
+    public List<Contact> getAll() {
+        return contactRepo.findAll();
+    }
+
+    /**
+     * Retrieves a contact by its ID.
+     * Throws a ResourceNotFoundException if the contact does not exist.
+     * 
+     * @param id The ID of the contact to retrieve.
+     * @return The Contact object if found.
+     */
+    @Override
+    public Contact getById(String id) {
+        return contactRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Can't fetch contact with ID: " + id));
+    }
+
+    /**
+     * Deletes a contact by its ID.
+     * Throws a ResourceNotFoundException if the contact does not exist.
+     * 
+     * @param id The ID of the contact to delete.
+     */
+    @Override
+    public void delete(String id) {
+        Contact contactToBeDeleted = contactRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Can't fetch contact with ID: " + id));
+        contactRepo.delete(contactToBeDeleted);
+    }
+
+    /**
+     * Retrieves a paginated list of contacts by the user's ID.
+     * 
+     * @param userId   The ID of the user whose contacts are to be retrieved.
+     * @param pageable The pagination information.
+     * @return A Page object containing the contacts for the specified user.
+     */
+    @Override
+    public Page<Contact> getByUserId(String userId, Pageable pageable) {
+        return contactRepo.findByUserId(userId, pageable);
+    }
+
+    /**
+     * Searches for contacts by the user's ID and a keyword in a paginated format.
+     * 
+     * @param userId   The ID of the user whose contacts are to be searched.
+     * @param keyword  The keyword to search in the contact details.
+     * @param pageable The pagination information.
+     * @return A Page object containing the contacts that match the search criteria.
+     */
+    @Override
+    public Page<Contact> searchByUserAndKeyword(String userId, String keyword, Pageable pageable) {
+        return contactRepo.findByUserIdAndKeyword(userId, keyword, pageable);
+    }
+
+    /**
+     * Retrieves a list of contacts for a user by their API key.
+     * 
+     * @param userId The ID of the user whose contacts are to be retrieved.
+     * @param apiKey The API key for authentication.
+     * @return A list of contacts for the specified user.
+     */
     @Override
     public List<Contact> getUserContactsAPI(String userId, String apiKey) {
-
         return contactRepo.findByUserId(userId, null).getContent();
     }
 

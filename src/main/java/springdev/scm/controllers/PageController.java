@@ -1,5 +1,7 @@
 package springdev.scm.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import springdev.scm.entities.User;
 import springdev.scm.forms.UserForm;
 import springdev.scm.services.UserService;
 
@@ -20,52 +21,55 @@ public class PageController {
     @Autowired
     private UserService userService;
 
+    private Logger logger = LoggerFactory.getLogger(RootController.class);
+
     // routing for /home
     @RequestMapping("/")
     public String indexPage() {
 
-        System.out.println(":> showing index page");
+        // logger.info(":> [logged-in] showing_index_page");
+
         return "index";
 
     }
 
     // routing for /home
     @RequestMapping("/home")
-    public String homePage(Model model) {
+    public String homePage() {
 
-        System.out.println(":> showing home page");
-        model.addAttribute("name", "Rohit");
+        // logger.info(":> [logged-in] showing_home_page");
+
         return "home";
 
     }
 
     // routing for /about
     @RequestMapping("/about")
-    public String aboutPage(Model model) {
+    public String aboutPage() {
 
-        System.out.println(":> showing about page");
-        model.addAttribute("name", "Rohit");
+        // logger.info(":> [logged-in] showing_about_page");
+
         return "about";
 
     }
 
     // routing for /services
     @RequestMapping("/services")
-    public String servicePage(Model model) {
+    public String servicePage() {
 
-        System.out.println(":> showing service page");
-        model.addAttribute("name", "Rohit");
+        // logger.info(":> [logged-in] showing_services_page");
+
         return "services";
 
     }
 
     // routing for /contact
     @RequestMapping("/developer-section")
-    public String contactPage(Model model) {
+    public String contactPage() {
 
-        System.out.println(":> showing developer-section page");
-        model.addAttribute("name", "Rohit");
-        return "contact";
+        // logger.info(":> [logged-in] showing_developer-section_page");
+
+        return "about_developer";
 
     }
 
@@ -73,26 +77,19 @@ public class PageController {
     @RequestMapping(value = "/login")
     public String loginPage() {
 
-        System.out.println(":> showing login page");
+        // logger.info(":> [logged-in] showing_login_page");
         return "login";
 
     }
 
-    // @RequestMapping(value = "/login-user", method = RequestMethod.POST) 
-    // public String processLogin() {
-
-    //     return "redirect:/user/profile";
-
-    // } 
-
     @RequestMapping("/register")
     public String registerPage(Model model) {
+
+        // logger.info(":> [logged-in] showing_register_page");
 
         UserForm userForm = new UserForm();
         model.addAttribute("userForm", userForm);
 
-        System.out.println(":> showing registration page");
-        model.addAttribute("name", "Rohit");
         return "register";
 
     }
@@ -102,14 +99,15 @@ public class PageController {
     public String processRegistration(@Valid @ModelAttribute UserForm userForm, BindingResult rBindingResult,
             HttpSession session) {
 
-        System.out.println(":> processing new registration");
+        // logger.info(":> [logged-in] processing_new_registration");
 
         if (rBindingResult.hasErrors()) {
             return "register";
         } else {
 
-            User savedUser = userService.registerUser(userForm);
-            System.out.println(":> user saved successfully");
+            userService.registerUser(userForm);
+
+            // logger.info(":> [logged-in] user_saved_successfully");
 
             session.setAttribute("message", "User registered successfully");
         }

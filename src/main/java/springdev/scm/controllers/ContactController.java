@@ -1,7 +1,5 @@
 package springdev.scm.controllers;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +48,6 @@ public class ContactController {
         model.addAttribute("contactFormData", contactForm);
         model.addAttribute("process_type", "add_new_contact");
 
-
         logger.info(":> showing add new contact page");
 
         return "user/add_contact";
@@ -72,7 +69,7 @@ public class ContactController {
 
             logger.info(":> processing_new_contact");
 
-            Contact savedContact = contactService.save(contactForm, authentication);
+            contactService.save(contactForm, authentication);
 
             session.setAttribute("message", "Contact saved successfully.");
 
@@ -154,7 +151,8 @@ public class ContactController {
     }
 
     @RequestMapping(value = "update-contact/{id}", method = RequestMethod.POST)
-    public String updateContact(@ModelAttribute ContactForm contactForm,  @PathVariable("id") String contactId, Authentication authentication, HttpSession session) {
+    public String updateContact(@ModelAttribute ContactForm contactForm, @PathVariable("id") String contactId,
+            Authentication authentication, HttpSession session) {
 
         logger.info("contact_id_fetched", contactId);
 
@@ -164,7 +162,5 @@ public class ContactController {
 
         return "redirect:/user/contact/all-contacts";
     }
-
-    
 
 }

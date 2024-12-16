@@ -15,10 +15,10 @@ import springdev.scm.services.UserService;
 @ControllerAdvice
 public class RootController {
 
-    private Logger logger = LoggerFactory.getLogger(UesrController.class);
-
     @Autowired
     private UserService userService;
+
+    private Logger logger = LoggerFactory.getLogger(RootController.class);
 
     @ModelAttribute
     public void addLoggedInUserInformation(Model model, Authentication authentication) {
@@ -27,23 +27,23 @@ public class RootController {
 
             return;
 
+        } else {
+
+            String loggedInUserEmail = Helper.getEmailOfLoggedInUser(authentication);
+
+            User loggedInUserData = userService.getUserByEmail(loggedInUserEmail);
+            model.addAttribute("loggedInUser", loggedInUserData);
+
+            // logger.info(":> [{}] > user_logged_in", loggedInUserEmail);
+
+            int numberOfContacts = loggedInUserData.getContacts() != null ? loggedInUserData.getContacts().size() : 0;
+            model.addAttribute("numberOfContacts", numberOfContacts);
+
+            // logger.info(":> [{}] > user_logged_in with [{}] contact(s)",
+            // loggedInUserEmail, numberOfContacts);
+
         }
-
-        String loggedInUserEmail = Helper.getEmailOfLoggedInUser(authentication);
-
-        User loggedInUserData = userService.getUserByEmail(loggedInUserEmail);
-
-        model.addAttribute("loggedInUser", loggedInUserData);
-
-        // logger.info(":> [{}] > user_logged_in", loggedInUserEmail);
-
-        // Fetch and add the count of contacts
-        int numberOfContacts = loggedInUserData.getContacts() != null ? loggedInUserData.getContacts().size() : 0;
-        model.addAttribute("numberOfContacts", numberOfContacts);
-
-        logger.info(":> [{}] > user_logged_in with [{}] contact(s)", loggedInUserEmail, numberOfContacts);
 
     }
 
 }
-

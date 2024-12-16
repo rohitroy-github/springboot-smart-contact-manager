@@ -31,16 +31,19 @@ public class ApiController {
 
     private Logger logger = LoggerFactory.getLogger(ApiController.class);
 
-    // :> API endpoint to fetch all the contact details of a contact entry  based on contactId
+    // :> API endpoint to fetch all the contact details of a contact entry based on
+    // contactId
     // :> endpoint > /api/contacts/<contact-id>
-    // :> [testing] > http://localhost:8081/api/contacts/688947b0-bb46-4836-86cf-39a21b9378f2
+    // :> [testing] >
+    // http://localhost:8081/api/contacts/688947b0-bb46-4836-86cf-39a21b9378f2
     @GetMapping("contacts/{contactId}")
     public Contact getContact(@PathVariable String contactId) {
 
-        logger.info("fetching_contact_info : {}", contactId);
+        // logger.info("fetching_contact_info : {}", contactId);
 
         Contact contact = contactService.getById(contactId);
-        logger.info("Contact fetched: {}", contact);
+
+        // logger.info("Contact fetched: {}", contact);
 
         return contactService.getById(contactId);
 
@@ -48,8 +51,9 @@ public class ApiController {
 
     // :> API endpoint to fetch all the contacts of any user based on the user-id
     // :> endpoint > /api/contacts?userId=<userId>&apiKey=<your-unique-api-key>
-    // :> [testing] > http://localhost:8081/api/contacts?userId=7c2c4824-5f59-4bee-85d3-9ffbea76f3d0&apiKey=131bfbc7-f12b-43e2-b42c-b9c7e1653247
-    @GetMapping("/contacts")
+    // :> [testing] >
+    // http://localhost:8081/api/user/contacts?userId=7c2c4824-5f59-4bee-85d3-9ffbea76f3d0&apiKey=131bfbc7-f12b-43e2-b42c-b9c7e1653247
+    @GetMapping("/user/contacts")
     public ResponseEntity<?> getUserContacts(
             @RequestParam("userId") String userId,
             @RequestParam("apiKey") String apiKey) {
@@ -57,7 +61,7 @@ public class ApiController {
         // logger.info("Fetching contacts for userId: {}", userId);
 
         if (!apiKey.equals(API_KEY)) {
-            // logger.warn("Invalid API key provided: {}", apiKey);
+            logger.warn("invalid_api_key_provided: {}", apiKey);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid API key.");
         }
 

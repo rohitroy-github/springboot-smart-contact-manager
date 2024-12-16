@@ -21,28 +21,31 @@ import springdev.scm.services.UserService;
 
 @Controller
 @RequestMapping("/user")
-public class UesrController {
-
-    private Logger logger = LoggerFactory.getLogger(UesrController.class);
+public class UserController {
 
     @Autowired
     private UserService userService;
 
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    // :> route > user/dashboard
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String userDashboard() {
-        logger.info(":> [logged-in] showing_user_dashboard");
+        // logger.info(":> [logged-in] showing_user_dashboard");
 
         return "user/dashboard";
     }
 
+    // :> route > user/profile
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String userProfile(Model model, Authentication authentication) {
 
-        logger.info(":> [logged-in] showing_user_profile");
+        // logger.info(":> [logged-in] showing_user_profile");
 
         return "user/profile";
     }
 
+    // :> route > user/profile/edit/<user-id>
     @RequestMapping(value = "profile/edit/{userId}", method = RequestMethod.GET)
     public String editUserProfile(@PathVariable("userId") String userId, Model model, Authentication authentication) {
         try {
@@ -87,6 +90,7 @@ public class UesrController {
         }
     }
 
+    // :> controller to verify email address
     @RequestMapping(value = "/verify/email/{userId}", method = RequestMethod.GET)
     public String verifyEmail(@PathVariable("userId") String userId, HttpSession session) {
         try {
@@ -105,6 +109,7 @@ public class UesrController {
         return "redirect:/user/profile";
     }
 
+    // :> controller to verify phone number
     @RequestMapping(value = "/verify/phone/{userId}", method = RequestMethod.GET)
     public String verifyPhone(@PathVariable("userId") String userId, HttpSession session) {
         try {
@@ -122,7 +127,5 @@ public class UesrController {
 
         return "redirect:/user/profile";
     }
-
-    
 
 }
