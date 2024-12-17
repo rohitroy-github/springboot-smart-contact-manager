@@ -41,3 +41,42 @@
 - **Maven**: Installed
 - **IDE**: IntelliJ IDEA, Eclipse, or any Java IDE 
 
+### Installation
+
+- First, clone the repository to your local system using the following command:
+
+```
+git clone <repository-url>
+```
+
+- Navigate into the project directory using the cd command:
+
+```
+cd scm
+```
+
+- Install the required frontend dependencies for the project by running:
+
+```
+npm install
+```
+
+- Create a new database named scm_db by running the following SQL command:
+
+```
+CREATE DATABASE scm_db;
+```
+
+- Make a copy of the [.env.example] file and name it [.env] and open the [.env] file and replace all the placeholder values (like GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, etc.) with your actual credentials.
+
+- Run the Spring Boot application. Start the project using Maven by running: 
+
+```
+./mvnw spring-boot:run
+```
+
+- Once the application is running, open your browser and go to the following URL:
+
+```
+http://localhost:8081
+```
