@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base :: parent(~{:: #content}, ~{:: title})}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Page</title>
+  <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+  <link rel="stylesheet" data-th-href="@{'/css/index.css'}" />
+</head>
+
+<body class="bg-gray-100 font-montserrat">
+
+  <section id="content" class="flex flex-col justify-center items-center min-h-screen text-center px-6">
+    <div class="max-w-4xl p-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">About Page</h2>
+
+
+      <p class="text-gray-800">
+        This Smart Contact Manager is a Spring Boot application structured around the MVC pattern and uses a MySQL
+        database for persistent data storage.
+        It provides secure user registration and login with role-based access control, allowing users to create, view,
+        edit, and delete contacts seamlessly.
+        The app's frontend is responsive and user-friendly, built with HTML5 and integrated with Spring MVC, making it a
+        robust solution for managing contacts efficiently.
+      </p>
+    </div>
+  </section>
+
+</body>
+
+</html>
