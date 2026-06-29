@@ -1,7 +1,7 @@
 package springdev.scm.controllers;
 
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
@@ -12,18 +12,26 @@ import springdev.scm.entities.User;
 import springdev.scm.helper.Helper;
 import springdev.scm.services.UserService;
 
+/*
+ * Developer Utility:
+ * Injects globally required logged-in user context into MVC models.
+ * Use this controller advice to avoid duplicating shared user model setup.
+ */
+
 @ControllerAdvice
 public class RootController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RootController.class);
+
     @Autowired
     private UserService userService;
-
-    // private Logger logger = LoggerFactory.getLogger(RootController.class);
 
     @ModelAttribute
     public void addLoggedInUserInformation(Model model, Authentication authentication) {
 
         if (authentication == null) {
+
+            LOGGER.debug("No authentication available while preparing model attributes");
 
             return;
 
@@ -33,19 +41,16 @@ public class RootController {
 
             User loggedInUserData = userService.getUserByEmail(loggedInUserEmail);
             if (loggedInUserData == null) {
+                LOGGER.warn("Authenticated principal not found in database for email={}", loggedInUserEmail);
                 model.addAttribute("loggedInUser", null);
                 model.addAttribute("numberOfContacts", 0);
                 return;
             }
             model.addAttribute("loggedInUser", loggedInUserData);
 
-            // logger.info(":> [{}] > user_logged_in", loggedInUserEmail);
-
             int numberOfContacts = loggedInUserData.getContacts() != null ? loggedInUserData.getContacts().size() : 0;
             model.addAttribute("numberOfContacts", numberOfContacts);
-
-            // logger.info(":> [{}] > user_logged_in with [{}] contact(s)",
-            // loggedInUserEmail, numberOfContacts);
+            LOGGER.debug("Attached logged-in user context: email={}, contacts={}", loggedInUserEmail, numberOfContacts);
 
         }
 

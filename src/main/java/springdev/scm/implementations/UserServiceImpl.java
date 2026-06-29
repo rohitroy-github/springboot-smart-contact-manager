@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import springdev.scm.repositories.UserRepo;
@@ -14,8 +16,6 @@ import springdev.scm.forms.UserForm;
 import springdev.scm.helper.AppConstants;
 import springdev.scm.helper.ResourceNotFoundException;
 
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -23,9 +23,10 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     private UserRepo userRepo;
-    // private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -64,6 +65,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveOAuthenticatedUser(DefaultOAuth2User oAuthenticatedUser, String oAuthClient) {
         User newUser = createBaseUser(oAuthenticatedUser, oAuthClient);
+        LOGGER.info("Saving OAuth user for email={} using provider={}", newUser.getEmail(), oAuthClient);
 
         // Add provider-specific attributes
         switch (oAuthClient.toLowerCase()) {
@@ -78,10 +80,13 @@ public class UserServiceImpl implements UserService {
                 newUser.setProvider(Providers.GITHUB);
                 break;
             default:
+                LOGGER.warn("Unsupported OAuth provider received: {}", oAuthClient);
                 throw new IllegalArgumentException("Unsupported OAuth provider: " + oAuthClient);
         }
 
-        return userRepo.save(newUser);
+        User savedUser = userRepo.save(newUser);
+        LOGGER.info("OAuth user saved successfully with userId={}", savedUser.getUserId());
+        return savedUser;
     }
 
     /**
@@ -89,10 +94,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User saveUser(User user) {
+        LOGGER.info("Saving manually created user for email={}", user.getEmail());
         user.setUserId(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoleList(List.of(AppConstants.ROLE_USER));
-        return userRepo.save(user);
+        User savedUser = userRepo.save(user);
+        LOGGER.info("Manual user save completed with userId={}", savedUser.getUserId());
+        return savedUser;
     }
 
     /**
@@ -103,6 +111,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User registerUser(UserForm userForm) {
+        LOGGER.info("Registering new user for email={}", userForm.getEmail());
         User newUser = new User();
 
         newUser.setUserId(UUID.randomUUID().toString());
@@ -117,7 +126,9 @@ public class UserServiceImpl implements UserService {
         newUser.setPhoneNumber(userForm.getPhoneNumber());
         newUser.setProfilePicture("https://www.pngarts.com/files/10/Default-Profile-Picture-Download-PNG-Image.png");
 
-        return userRepo.save(newUser);
+        User savedUser = userRepo.save(newUser);
+        LOGGER.info("User registration completed with userId={}", savedUser.getUserId());
+        return savedUser;
     }
 
     /**
@@ -129,13 +140,16 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User updateUser(UserForm userForm) {
+        LOGGER.info("Updating user profile for userId={}", userForm.getId());
         User existingUser = userRepo.findById(userForm.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userForm.getId()));
 
         // Update the fields
         updateUserFields(existingUser, userForm);
 
-        return userRepo.save(existingUser);
+        User updatedUser = userRepo.save(existingUser);
+        LOGGER.info("User profile updated successfully for userId={}", updatedUser.getUserId());
+        return updatedUser;
     }
 
     /**
@@ -154,6 +168,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> getUserById(String userId) {
+        LOGGER.debug("Fetching user by userId={}", userId);
 
         return userRepo.findById(userId);
     }
@@ -166,9 +181,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void deleteUser(String userId) {
+        LOGGER.info("Deleting user with userId={}", userId);
         User fetchedUser = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
         userRepo.delete(fetchedUser);
+        LOGGER.info("User deleted successfully with userId={}", userId);
     }
 
     /**
@@ -224,14 +241,18 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean verifyEmail(String userId) {
+        LOGGER.info("Verifying email for userId={}", userId);
         Optional<User> optionalUser = userRepo.findById(userId);
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setEmailVerified(true);
             userRepo.save(user);
+            LOGGER.info("Email verified for userId={}", userId);
             return true;
         }
+
+        LOGGER.warn("Email verification failed; user not found for userId={}", userId);
 
         return false;
     }
@@ -244,14 +265,18 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean verifyPhone(String userId) {
+        LOGGER.info("Verifying phone number for userId={}", userId);
         Optional<User> optionalUser = userRepo.findById(userId);
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setPhoneNumberVerified(true);
             userRepo.save(user);
+            LOGGER.info("Phone number verified for userId={}", userId);
             return true;
         }
+
+        LOGGER.warn("Phone verification failed; user not found for userId={}", userId);
 
         return false;
     }

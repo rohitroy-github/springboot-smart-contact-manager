@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import springdev.scm.controllers.ContactController;
 import springdev.scm.entities.Contact;
 import springdev.scm.entities.User;
 import springdev.scm.forms.ContactForm;
@@ -33,13 +32,13 @@ import org.springframework.data.domain.Pageable;
 @Service
 public class ContactServiceImpl implements ContactService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContactServiceImpl.class);
+
     @Autowired
     private ContactRepo contactRepo;
 
     @Autowired
     private UserService userService;
-
-    private Logger logger = LoggerFactory.getLogger(ContactController.class);
 
     /**
      * Creates and persists a new contact associated with the authenticated user.
@@ -80,7 +79,7 @@ public class ContactServiceImpl implements ContactService {
             newContact.setPicture(contactForm.getPicture());
         }
 
-        logger.info("Creating new contact: {}", newContact);
+        LOGGER.info("Creating new contact for userEmail={} with name={}", userEmail, newContact.getName());
 
         return contactRepo.saveAndFlush(newContact);
 
@@ -173,7 +172,7 @@ public class ContactServiceImpl implements ContactService {
         Contact contact = contactRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Can't fetch contact with ID: " + id));
 
-        logger.info("Deleting contact: {} (ID: {})", contact.getName(), id);
+        LOGGER.info("Deleting contact: name={}, id={}", contact.getName(), id);
 
         try {
             // Remove contact from user's contact list (for orphan removal)
@@ -185,9 +184,9 @@ public class ContactServiceImpl implements ContactService {
             contactRepo.deleteById(id);
             // Force immediate execution
             contactRepo.flush();
-            logger.info("Contact deleted successfully: {}", id);
+            LOGGER.info("Contact deleted successfully: id={}", id);
         } catch (Exception ex) {
-            logger.error("Database error while deleting contact: {}", id, ex);
+            LOGGER.error("Database error while deleting contact: id={}", id, ex);
             throw new RuntimeException("Unable to delete contact: " + ex.getMessage(), ex);
         }
     }

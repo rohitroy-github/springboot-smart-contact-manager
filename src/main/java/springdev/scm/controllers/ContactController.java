@@ -27,6 +27,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+/*
+ * Developer Utility:
+ * Owns authenticated contact CRUD workflows and contact list/search pages.
+ * Use this controller for user-facing contact operations under /user/contact.
+ */
+
 /**
  * Controller responsible for handling all contact-related operations for
  * authenticated users, including adding, viewing, searching, editing,
@@ -38,7 +44,7 @@ import org.springframework.data.domain.Pageable;
 @RequestMapping("user/contact")
 public class ContactController {
 
-    private Logger logger = LoggerFactory.getLogger(ContactController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
     @Autowired
     private UserService userService;
@@ -59,7 +65,7 @@ public class ContactController {
         model.addAttribute("contactFormData", contactForm);
         model.addAttribute("process_type", "add_new_contact");
 
-        logger.info(":> showing_add_new_contact_page ");
+        LOGGER.info("Serving page: GET /user/contact/add");
 
         return "user/add_contact";
     }
@@ -84,7 +90,7 @@ public class ContactController {
             return "user/contact/add";
         } else {
 
-            logger.info(":> processing_new_contact");
+            LOGGER.info("Processing contact creation request");
 
             contactService.save(contactForm, authentication);
 
@@ -141,7 +147,8 @@ public class ContactController {
         model.addAttribute("totalPages", contacts.getTotalPages());
         model.addAttribute("search", search);
 
-        logger.info(":> showing all contacts for user: {}", loggedInUser.getName());
+        LOGGER.info("Listing contacts for userId={}, page={}, size={}, hasSearch={}",
+            loggedInUser.getUserId(), page, size, search != null && !search.isEmpty());
 
         return "user/all_contacts";
     }
@@ -170,7 +177,7 @@ public class ContactController {
             // Fetch the contact to be deleted
             Contact contact = contactService.getById(contactId);
 
-            logger.info(":> attempting_to_delete_contact_with_id: {}", contactId);
+            LOGGER.info("Attempting contact deletion for contactId={}", contactId);
 
             // Ensure that the logged-in user owns this contact
             if (!contact.getUser().getUserId().equals(loggedInUser.getUserId())) {
@@ -182,10 +189,10 @@ public class ContactController {
             session.setAttribute("message", "Contact deleted successfully.");
         } catch (ResourceNotFoundException ex) {
             session.setAttribute("message", "Contact not found.");
-            logger.warn("Contact not found for deletion: {}", contactId);
+            LOGGER.warn("Contact not found for deletion: contactId={}", contactId);
         } catch (Exception ex) {
             session.setAttribute("message", "Error deleting contact: " + ex.getMessage());
-            logger.error("Error deleting contact with ID: {}", contactId, ex);
+            LOGGER.error("Error deleting contact: contactId={}", contactId, ex);
         }
 
         return "redirect:/user/contact/all-contacts";
@@ -223,7 +230,7 @@ public class ContactController {
     public String updateContact(@ModelAttribute ContactForm contactForm, @PathVariable("id") String contactId,
             Authentication authentication, HttpSession session) {
 
-        logger.info("contact_id_fetched: {}", contactId);
+        LOGGER.info("Processing contact update for contactId={}", contactId);
 
         contactForm.setId(contactId);
         contactService.update(contactForm, authentication);

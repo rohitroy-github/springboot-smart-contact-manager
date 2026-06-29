@@ -19,6 +19,12 @@ import springdev.scm.services.ContactService;
 // :> fetching values from application.properties
 import org.springframework.beans.factory.annotation.Value;
 
+/*
+ * Developer Utility:
+ * Exposes JSON endpoints for contact retrieval under /api.
+ * Use this controller for API/integration access, not for HTML page rendering.
+ */
+
 /**
  * REST controller that exposes public API endpoints for contact data retrieval.
  * API key-based authentication is used to protect user-scoped endpoints.
@@ -29,6 +35,8 @@ import org.springframework.beans.factory.annotation.Value;
 @RequestMapping("/api")
 public class ApiController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiController.class);
+
     @Autowired
     private ContactService contactService;
 
@@ -37,8 +45,6 @@ public class ApiController {
      */
     @Value("${api.key}")
     private String API_KEY;
-
-    private Logger logger = LoggerFactory.getLogger(ApiController.class);
 
     /**
      * Retrieves the full details of a single contact by its ID.
@@ -51,7 +57,7 @@ public class ApiController {
     @GetMapping("contacts/{contactId}")
     public Contact getContact(@PathVariable String contactId) {
 
-        logger.info("fetching_contact_info : {}", contactId);
+        LOGGER.info("Fetching contact details for contactId={}", contactId);
 
         return contactService.getById(contactId);
 
@@ -73,21 +79,21 @@ public class ApiController {
             @RequestParam("userId") String userId,
             @RequestParam("apiKey") String apiKey) {
 
-        logger.info("Fetching contacts for userId: {}", userId);
+        LOGGER.info("Fetching contacts for userId={}", userId);
 
         // Reject the request immediately if the provided API key does not match
         if (!apiKey.equals(API_KEY)) {
-            logger.warn("invalid_api_key_provided: {}", apiKey);
+            LOGGER.warn("Unauthorized contacts API access attempt for userId={}", userId);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid API key.");
         }
 
         try {
             List<Contact> contacts = contactService.getUserContactsAPI(userId, apiKey);
-            logger.info("Fetched {} contacts for userId: {}", contacts.size(), userId);
+            LOGGER.info("Fetched {} contact(s) for userId={}", contacts.size(), userId);
             return ResponseEntity.ok(contacts);
 
         } catch (Exception e) {
-            logger.error("Error fetching contacts for userId: {}", userId, e);
+            LOGGER.error("Error fetching contacts for userId={}", userId, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred while fetching contacts.");
         }

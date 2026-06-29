@@ -23,34 +23,29 @@ import org.slf4j.LoggerFactory;
 @Component
 public class OAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(OAuthenticationSuccessHandler.class);
+
     @Autowired
     private UserRepo userRepo;
 
     @Autowired
     private UserService userService;
 
-    Logger logger = LoggerFactory.getLogger(OAuthenticationSuccessHandler.class);
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
 
-        // :> [testing]
-        logger.info("onAuthenticationSuccess_executing");
+        LOGGER.info("OAuth2 authentication success handler invoked");
 
         // :> fetching the oauth2 client ?
         var oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
         String oAuthClientId = oAuth2AuthenticationToken.getAuthorizedClientRegistrationId();
 
-        // :> [testing]
-        logger.info(":> oauth2 client : {}", oAuthClientId);
+        LOGGER.info("OAuth2 client registration id={}", oAuthClientId);
 
         DefaultOAuth2User oAuthenticatedUser = (DefaultOAuth2User) authentication.getPrincipal();
 
-        // :> [testing]
-        oAuthenticatedUser.getAttributes().forEach((key, value) -> {
-            logger.info(key + " : " + value);
-        });
+        LOGGER.debug("OAuth2 principal attribute keys={}", oAuthenticatedUser.getAttributes().keySet());
 
         // // :> extracting email attrubute from [GOOGLE]
         String email = oAuthenticatedUser.getAttribute("email").toString(); // :> "email" attribute is common for both
@@ -66,15 +61,15 @@ public class OAuthenticationSuccessHandler implements AuthenticationSuccessHandl
         User userWithSameEmail = userRepo.findByEmail(email).orElse(null);
         if (userWithSameEmail == null) {
 
-            logger.info(":> New user found.");
+            LOGGER.info("New OAuth2 user detected for email={}", email);
 
             // :> saving user to DB
-            User savedUser = userService.saveOAuthenticatedUser(oAuthenticatedUser, oAuthClientId);
+            userService.saveOAuthenticatedUser(oAuthenticatedUser, oAuthClientId);
 
-            logger.info(":> User has been successfully saved in DB.");
+            LOGGER.info("OAuth2 user persisted successfully for email={}", email);
 
         } else {
-            logger.info(":> User already exists in DB.");
+            LOGGER.info("OAuth2 user already exists for email={}", email);
 
         }
 

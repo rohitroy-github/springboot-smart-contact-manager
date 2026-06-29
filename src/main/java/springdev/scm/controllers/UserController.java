@@ -19,6 +19,12 @@ import springdev.scm.forms.UserForm;
 import springdev.scm.helper.ResourceNotFoundException;
 import springdev.scm.services.UserService;
 
+/*
+ * Developer Utility:
+ * Manages authenticated user account screens and profile verification actions.
+ * Use this controller for /user dashboard/profile/edit/verify workflows.
+ */
+
 /**
  * Controller responsible for handling user-specific pages and profile
  * management
@@ -31,10 +37,10 @@ import springdev.scm.services.UserService;
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
-
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     /**
      * Displays the authenticated user's dashboard.
@@ -72,7 +78,7 @@ public class UserController {
 
             model.addAttribute("loggedInUser", user);
         } catch (Exception e) {
-            logger.error("Error while fetching user details: " + e.getMessage(), e);
+            LOGGER.error("Error while fetching profile details for userId={}", userId, e);
             model.addAttribute("error", "An error occurred while fetching your profile. Please try again later.");
         }
 
@@ -137,7 +143,7 @@ public class UserController {
                 session.setAttribute("message", "Failed to verify email.");
             }
         } catch (Exception e) {
-            logger.error("Error verifying email: " + e.getMessage(), e);
+            LOGGER.error("Error verifying email for userId={}", userId, e);
             session.setAttribute("message", "An error occurred while verifying email.");
         }
 
@@ -164,7 +170,7 @@ public class UserController {
                 session.setAttribute("message", "Failed to verify phone number.");
             }
         } catch (Exception e) {
-            logger.error("Error verifying phone number: " + e.getMessage(), e);
+            LOGGER.error("Error verifying phone number for userId={}", userId, e);
             session.setAttribute("message", "An error occurred while verifying phone number.");
         }
 

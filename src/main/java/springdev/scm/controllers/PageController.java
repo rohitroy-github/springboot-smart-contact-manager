@@ -15,6 +15,12 @@ import jakarta.validation.Valid;
 import springdev.scm.forms.UserForm;
 import springdev.scm.services.UserService;
 
+/*
+ * Developer Utility:
+ * Handles public entry pages and signup flow for unauthenticated users.
+ * Use this controller for static/public routes like home, about, login, and register.
+ */
+
 /**
  * Controller responsible for serving all public-facing static pages and
  * handling new user registration. No authentication is required for these
@@ -23,10 +29,10 @@ import springdev.scm.services.UserService;
 @Controller
 public class PageController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PageController.class);
+
     @Autowired
     private UserService userService;
-
-    private Logger logger = LoggerFactory.getLogger(PageController.class);
 
     /**
      * Serves the application root. Redirects to the home page.
@@ -35,7 +41,7 @@ public class PageController {
      */
     @RequestMapping("/")
     public String indexPage() {
-        logger.info(":> showing_index_page");
+        LOGGER.info("Serving landing page: GET /");
         return "home";
     }
 
@@ -46,7 +52,7 @@ public class PageController {
      */
     @RequestMapping("/home")
     public String homePage() {
-        logger.info(":> showing_home_page");
+        LOGGER.info("Serving page: GET /home");
         return "home";
     }
 
@@ -57,7 +63,7 @@ public class PageController {
      */
     @RequestMapping("/about")
     public String aboutPage() {
-        logger.info(":> showing_about_page");
+        LOGGER.info("Serving page: GET /about");
         return "about";
     }
 
@@ -68,7 +74,7 @@ public class PageController {
      */
     @RequestMapping("/services")
     public String servicePage() {
-        logger.info(":> showing_services_page");
+        LOGGER.info("Serving page: GET /services");
         return "services";
     }
 
@@ -79,7 +85,7 @@ public class PageController {
      */
     @RequestMapping("/developer-section")
     public String contactPage() {
-        logger.info(":> showing_developer_section_page");
+        LOGGER.info("Serving page: GET /developer-section");
         return "about_developer";
     }
 
@@ -90,7 +96,7 @@ public class PageController {
      */
     @RequestMapping(value = "/login")
     public String loginPage() {
-        logger.info(":> showing_login_page");
+        LOGGER.info("Serving page: GET /login");
         return "login";
     }
 
@@ -102,7 +108,7 @@ public class PageController {
      */
     @RequestMapping("/register")
     public String registerPage(Model model) {
-        logger.info(":> showing_register_page");
+        LOGGER.info("Serving page: GET /register");
 
         // Initialise an empty form object for Thymeleaf binding
         UserForm userForm = new UserForm();
@@ -126,13 +132,14 @@ public class PageController {
     public String processRegistration(@Valid @ModelAttribute UserForm userForm, BindingResult rBindingResult,
             HttpSession session) {
 
-        logger.info(":> processing_new_registration");
+        LOGGER.info("Processing registration request: POST /register-user");
 
         if (rBindingResult.hasErrors()) {
+            LOGGER.warn("Registration validation failed with {} error(s)", rBindingResult.getErrorCount());
             return "register";
         } else {
             userService.registerUser(userForm);
-            logger.info(":> user_saved_successfully");
+            LOGGER.info("User registration completed successfully");
             session.setAttribute("message", "User registered successfully");
         }
 
